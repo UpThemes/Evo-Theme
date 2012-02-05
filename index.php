@@ -82,10 +82,13 @@ get_header();
 
 						    <a href="<?php the_permalink(); ?>">
 						    <?php 
-						    if ( has_post_thumbnail() )
+						    if ( has_post_thumbnail() ) {
                                 the_post_thumbnail('medium');
-                            else
+                            } else {
+								$width = get_option( 'thumbnail_size_w' );
+								$height = get_option( 'thumbnail_size_h' );
                             	echo "<img style='-ms-interpolation-mode: bicubic;' width='" . $width . "' height='" . $width . "' src='" . get_bloginfo('stylesheet_directory') . "/images/placeholder.png' alt='" . get_the_title() . "' />";
+							}
 						    ?>
 						    </a>
 						    
