@@ -1,7 +1,7 @@
 <?php
 
 function rssfeed(){ ?>
-<link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> &raquo; <?php _e('Feed','evo'); ?>" href="<?php rss(); ?>" />
+<link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> &raquo; <?php _e('Feed','evo'); ?>" href="<?php upfw_rss(); ?>" />
 <?php
 }
 
@@ -656,4 +656,4 @@ add_filter('evo_page_title', 'gallery_page_title');
 // End of Filter the Page Title
 
 // UpThemes Admin Functions
-require_once('admin/functions.php');
+require_once('admin/admin.php');
