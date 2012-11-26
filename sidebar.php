@@ -1,17 +1,17 @@
-<?php 
-
-global $up_options;
-
-if((is_page() || is_search()) || ($up_options->showsidebar && (is_search() || is_page() || is_category() || is_archive || is_home() || is_front_page() || is_tag()))):
-
+<?php
+/**
+ * The sidebar containing the main widget area.
+ *
+ * If no active widgets in sidebar, let's hide it completely.
+ *
+ * @package WordPress
+ * @subpackage Twenty_Twelve
+ * @since Twenty Twelve 1.0
+ */
 ?>
 
-<?php if (is_sidebar_active('primary-aside')) { ?>
-	<div id="primary" class="aside main-aside">
-		<ul class="xoxo">
-	<?php dynamic_sidebar('primary-aside'); ?>
-		</ul>
-	</div><!-- #primary .aside -->
-<?php } ?>
-
-<?php endif; ?>
+	<?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
+		<div id="secondary" class="widget-area" role="complementary">
+			<?php dynamic_sidebar( 'sidebar-1' ); ?>
+		</div><!-- #secondary -->
+	<?php endif; ?>

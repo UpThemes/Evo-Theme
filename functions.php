@@ -1,659 +1,496 @@
 <?php
+/**
+ * Evo functions and definitions.
+ *
+ * Sets up the theme and provides some helper functions, which are used
+ * in the theme as custom template tags. Others are attached to action and
+ * filter hooks in WordPress to change core functionality.
+ *
+ * When using a child theme (see http://codex.wordpress.org/Theme_Development and
+ * http://codex.wordpress.org/Child_Themes), you can override certain functions
+ * (those wrapped in a function_exists() call) by defining them first in your child theme's
+ * functions.php file. The child theme's functions.php file is included before the parent
+ * theme's file, so the child theme functions would be used.
+ *
+ * Functions that are not pluggable (not wrapped in function_exists()) are instead attached
+ * to a filter or action hook.
+ *
+ * For more information on hooks, actions, and filters, see http://codex.wordpress.org/Plugin_API.
+ *
+ * @package WordPress
+ * @subpackage Evo
+ * @since Evo 1.0
+ */
 
-function rssfeed(){ ?>
-<link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> &raquo; <?php _e('Feed','evo'); ?>" href="<?php upfw_rss(); ?>" />
-<?php
+/**
+ * Sets up the content width value based on the theme's design and stylesheet.
+ */
+if ( ! isset( $content_width ) )
+	$content_width = 660;
+
+/**
+ * Sets up theme defaults and registers the various WordPress features that
+ * Evo supports.
+ *
+ * @uses load_theme_textdomain() For translation/localization support.
+ * @uses add_editor_style() To add a Visual Editor stylesheet.
+ * @uses add_theme_support() To add support for post thumbnails, automatic feed links,
+ * 	custom background, and post formats.
+ * @uses register_nav_menu() To add support for navigation menus.
+ * @uses set_post_thumbnail_size() To set a custom post thumbnail size.
+ *
+ * @since Evo 1.0
+ */
+function evo_setup() {
+	/*
+	 * Makes Evo available for translation.
+	 *
+	 * Translations can be added to the /languages/ directory.
+	 * If you're building a theme based on Evo, use a find and replace
+	 * to change 'evo' to the name of your theme in all the template files.
+	 */
+	load_theme_textdomain( 'evo', get_template_directory() . '/languages' );
+
+	// This theme styles the visual editor with editor-style.css to match the theme style.
+	add_editor_style();
+
+	// Adds RSS feed links to <head> for posts and comments.
+	add_theme_support( 'automatic-feed-links' );
+
+	// This theme supports a variety of post formats.
+	add_theme_support( 'post-formats', array( 'aside', 'image', 'link', 'quote', 'status' ) );
+
+	// This theme uses wp_nav_menu() in one location.
+	register_nav_menu( 'primary_nav', __( 'Primary Menu', 'evo' ) );
+
+  add_image_size('full-width',660,99999,false);
+  add_image_size('full-width-2x',1320,99999,false);
+  add_image_size('grid',200,200,false);
+  add_image_size('grid-2x',400,400,false);
+
+	/*
+	 * This theme supports custom background color and image, and here
+	 * we also set up the default background color.
+	 */
+	add_theme_support( 'custom-background', array(
+		'default-color' => 'ffffff',
+	) );
+
+	// This theme uses a custom image size for featured images, displayed on "standard" posts.
+	add_theme_support( 'post-thumbnails' );
+	set_post_thumbnail_size( 624, 9999 ); // Unlimited height, soft crop
 }
+add_action( 'after_setup_theme', 'evo_setup' );
 
-add_theme_support( 'post-thumbnails' );
-add_theme_support( 'nav-menus' );
+/**
+ * Adds support for a custom header image.
+ */
+include_once( get_template_directory() . '/library/custom-header.php' );
 
-if(function_exists('register_nav_menu')):
+/**
+ * Enqueues scripts and styles for front-end.
+ *
+ * @since Evo 1.0
+ */
+function evo_scripts_styles() {
 
-	register_nav_menu( 'primary_nav' , 'Primary Navigation' );
-	register_nav_menu( 'footer_nav' , 'Footer Navigation' );
+	/*
+	 * Adds JavaScript to pages with the comment form to support
+	 * sites with threaded comments (when in use).
+	 */
+	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) )
+		wp_enqueue_script( 'comment-reply' );
 
-endif;
+	wp_enqueue_script( 'evo-navigation', get_template_directory_uri() . '/js/navigation.js', false );
+  wp_enqueue_script( 'evo-hoverIntent', get_template_directory_uri() . '/js/hoverIntent.js', false );
+  wp_enqueue_script( 'evo-retina', get_template_directory_uri() . '/js/jquery.retina.js', false );
+  wp_enqueue_script( 'evo-onImagesLoad', get_template_directory_uri() . '/js/jquery.onImagesLoad.js', false );
+  wp_enqueue_script( 'evo-masonry', get_template_directory_uri() . '/js/jquery.masonry.js', array('jquery','evo-hoverIntent') );
+  wp_enqueue_script( 'evo-scrollTo', get_template_directory_uri() . '/js/jquery.scrollTo.js', array('evo-masonry') );
+  wp_enqueue_script( 'evo-superfish', get_template_directory_uri() . '/js/superfish.js' );
+  wp_enqueue_script( 'evo-supersubs', get_template_directory_uri() . '/js/supersubs.js', array('evo-superfish') );
+  wp_enqueue_script( 'evo-global', get_template_directory_uri() . '/js/global.js', array('evo-retina','evo-scrollTo','evo-supersubs','evo-navigation','evo-onImagesLoad') );
 
-add_action('wp_head','rssfeed',1);
-
-// Getting Theme and Child Theme Data
-// Credits: Joern Kretzschmar
-
-$themeData = get_theme_data(TEMPLATEPATH . '/style.css');
-$version = trim($themeData['Version']);
-if(!$version)
-    $version = "unknown";
-
-// set theme constants
-define('THEMENAME', $themeData['Title']);
-define('THEMEAUTHOR', $themeData['Author']);
-define('THEMEURI', $themeData['URI']);
-define('THEMATICVERSION', $version);
-
-// Path constants
-define('THEMELIB', TEMPLATEPATH . '/library');
-
-function wp_page_menu_mod(){
-	
-	$menu = wp_list_pages( array('echo' => 0, 'title_li' => false ) );
-	
-	echo '<ul class="sf-menu">'.$menu.'</ul>';
-	
+	/*
+	 * Loads our main stylesheet.
+	 */
+	wp_enqueue_style( 'evo-style', get_stylesheet_uri() );
 }
+add_action( 'wp_enqueue_scripts', 'evo_scripts_styles' );
 
-// Load widgets
-require_once(THEMELIB . '/extensions/widgets.php');
+function evo_post_thumbnail( $size ){
 
-// Load custom header extensions
-require_once(THEMELIB . '/extensions/header-extensions.php');
+  global $post;
 
-// Load custom content filters
-require_once(THEMELIB . '/extensions/content-extensions.php');
+  if( $size == 'grid' ):
+    $normal_size = 'grid';
+    $retina_size = 'grid-2x';
+  elseif( $size == 'full-width' ):
+    $normal_size = 'full-width';
+    $retina_size = 'full-width-2x';
+  else:
+    $normal_size = 'medium';
+    $retina_size = 'large';
+  endif;
 
-// Load custom Comments filters
-require_once(THEMELIB . '/extensions/comments-extensions.php');
+  $post_thumbnail_id = get_post_thumbnail_id($post->ID);
 
-// Load custom Widgets
-require_once(THEMELIB . '/extensions/widgets-extensions.php');
+  $normal_image = wp_get_attachment_image_src( $post_thumbnail_id, $normal_size);
+  $normal_image_src = $normal_image[0];
+  $normal_width = $normal_image[1];
+  $normal_height = $normal_image[2];
+  $retina_image = wp_get_attachment_image_src( $post_thumbnail_id, $retina_size);
+  $retina_image_src = $retina_image[0];
+  $retina_width =  $retina_image[1] ? $retina_image[1] : '200';
+  $retina_height = $retina_image[2] ? $retina_image[2] : '200';
 
-// Load the Comments Template functions and callbacks
-require_once(THEMELIB . '/extensions/discussion.php');
-
-// Load custom sidebar hooks
-require_once(THEMELIB . '/extensions/sidebar-extensions.php');
-
-// Load custom footer hooks
-require_once(THEMELIB . '/extensions/footer-extensions.php');
-
-// Add Dynamic Contextual Semantic Classes
-require_once(THEMELIB . '/extensions/dynamic-classes.php');
-
-// Need a little help from our helper functions
-require_once(THEMELIB . '/extensions/helpers.php');
-
-// Load shortcodes
-require_once(THEMELIB . '/extensions/shortcodes.php');
-
-// Adds filters for the description/meta content in archives.php
-add_filter( 'archive_meta', 'wptexturize' );
-add_filter( 'archive_meta', 'convert_smilies' );
-add_filter( 'archive_meta', 'convert_chars' );
-add_filter( 'archive_meta', 'wpautop' );
-
-// Remove the WordPress Generator – via http://blog.ftwr.co.uk/archives/2007/10/06/improving-the-wordpress-generator/
-function evo_remove_generators() { return ''; }  
-add_filter('the_generator','evo_remove_generators');
-
-// Translate, if applicable
-load_theme_textdomain('evo', THEMELIB . '/languages');
-$locale = get_locale();
-$locale_file = THEMELIB . "/languages/$locale.php";
-if (is_readable($locale_file)) require_once($locale_file);
-
-function rss_post_thumbnail($content) {
-	
-	global $post;
-	if(has_post_thumbnail($post->ID)) {
-		$content = get_the_post_thumbnail($post->ID,'large') . "<br/>" . $content;
-	}
-	return $content;
-	
-}
-
-add_filter('the_excerpt_rss', 'rss_post_thumbnail');
-add_filter('the_content_feed', 'rss_post_thumbnail');
-
-// Enqueue Scripts
-function add_scripts(){
-	
-	global $up_options;
-			
-	if(!is_admin()):
-				
-		wp_enqueue_script('superfish',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/superfish.js',
-			array('jquery'),
-			false );
-
-		wp_enqueue_script('masonry',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/jquery.masonry.js',
-			array('jquery'),
-			false );
-		
-		wp_enqueue_script('jquery.onImagesLoad',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/jquery.onImagesLoad.js',
-			array('jquery','masonry','global'),
-			false );
-
-		wp_enqueue_script('jquery.jflow',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/jquery.flow.js',
-			array('jquery'),
-			false );
-
-		wp_enqueue_script('jquery.scrollTo',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/jquery.scrollTo.js',
-			array('jquery','masonry'),
-			false );
-
-		wp_enqueue_script('supersubs',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/supersubs.js',
-			array('jquery','superfish'),
-			false );
-
-		wp_enqueue_script('hoverIntent',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/hoverIntent.js',
-			array('jquery','superfish','supersubs'),
-			false );
-
-		wp_enqueue_script('evo-dropdowns',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/evo-dropdowns.js',
-			array('jquery','superfish','supersubs','hoverIntent'),
-			false );
-
-		wp_enqueue_script('jquery.metadata',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/jquery.metadata.js',
-			array('jquery'),
-			false );
-	
-		wp_enqueue_script('jquery.form',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/jquery.form.js',
-			array('jquery','jquery.metadata'),
-			false );
-
-		wp_enqueue_script('jquery.validate',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/jquery.validate.pack.js',
-			array('jquery','jquery.metadata','jquery.form'),
-			false );
-
-		wp_enqueue_script('global',
-			get_bloginfo('stylesheet_directory') . '/library/scripts/global.js',
-			array('jquery','masonry','jquery.scrollTo'),
-			false );
-		
-	endif;
- 
-	if(isset($_REQUEST['style'])):
-		$theme_color = $_REQUEST['style'];
-		setcookie('style',$theme_color);
-	endif;
-
-}
-
-add_action('init','add_scripts');
-
-// Enqueue Styles
-function add_styles(){
-  
-  if( !is_admin() ){
-    global $up_options;
-
-  	$stylesheet_dir = get_bloginfo('template_directory');
-	
-	if( $up_options->style ):
-	    $theme_color = $up_options->style;
-		$myStyleUrl =  $stylesheet_dir . "/style-" . $theme_color . ".css";
-		wp_enqueue_style('gallery', $myStyleUrl, array(), false, 'screen');
-	endif;
-    
+  if( $retina_image_src ){
+ 		$retina_image = " data-retina=\"$retina_image_src\"";
   }
-  
-}
 
-add_action('wp_print_styles','add_styles');
+  if( get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true) )
+    $alt_text = ' alt="' . get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true) . '"';
+  else
+    $alt_text = '';
 
-function slideshow(){
-
-	if( is_single() ):
-	
-		echo '<script>
-		if(jQuery("#mySlides img").length > 1 && jQuery("#myController").length >= 1){
-			jQuery("#myController").jFlow({
-				slides: "#mySlides",
-				duration: 400
-			});
-		}
-		</script>';
-	
-	endif;
-	
-}
-
-add_action('wp_footer','slideshow');
-
-function custom_fonts(){
-	global $up_options;
-
-	$custom_fonts = '<style type="text/css">';
-
-	if($up_options->primary_font):
-
-		$primaryFont = (int) $up_options->primary_font;
-		
-		switch($primaryFont):
-
-			default:
-				$primaryFontStack = 'Helvetica, Arial, Tahoma, Verdana, sans-serif';
-				break;
-			case 1:
-				$primaryFontStack = 'Franchise, Helvetica, Arial, Tahoma, sans-serif';
-				$primaryFontFace 	= 'franchise';
-				break;
-			case 2:
-				$primaryFontStack = '"Winterthur Condensed Regular", Helvetica, Arial, Tahoma, sans-serif';
-				$primaryFontFace 	= 'winterthur-condensed';
-				break;
-			case 3:
-				$primaryFontStack = '"Yanone Kaffeesatz Regular", Helvetica, Arial, Tahoma, sans-serif';
-				$primaryFontFace 	= 'yanone-kaffeesatz';
-				break;
-			case 4:
-				$primaryFontStack = '"Bebas Neue", Helvetica, Arial, Tahoma, sans-serif';
-				$primaryFontFace 	= 'bebas-neue';
-				break;
-			case 5:
-				$primaryFontStack = 'Helvetica, Arial, Tahoma, Verdana, sans-serif';
-				break;
-			case 6:
-				$primaryFontStack = 'Garamond, Avant Garde, Palatino, "Times New Roman", serif';
-				break;
-				
-		endswitch;
-		
-		if($primaryFontFace)
-			echo "<link href='" . get_bloginfo('template_directory') . "/library/fonts/" . $primaryFontFace . "/stylesheet.css' rel='stylesheet' type='text/css' />";
-
-		$custom_fonts .= "
-			#content h1,
-			#content h2,
-			#content h3,
-			#content h4,
-			#content h5,
-			#content h6, 
-			#discussion h1,
-			#discussion h2,
-			#discussion h3,
-			#discussion h4,
-			#discussion h5,
-			#discussion h6,
-			#header,
-			#header input,
-			#header button,
-			#footer,
-			.said,
-			.time,
-			.comment-reply-link,
-			#more a,
-			legend,
-			label{ 
-				font-family: {$primaryFontStack};
-				text-transform: uppercase;
-			}";
-
-	endif;
-
-	if($up_options->secondary_font):
-
-		$secondaryFont = (int) $up_options->secondary_font;
-		
-		switch($secondaryFont):
-
-			default:
-				$secondaryFontStack = 'Helvetica, Arial, Tahoma, Verdana, sans-serif';
-				break;
-			case 1:
-				$secondaryFontStack = 'Franchise, Helvetica, Arial, Tahoma, sans-serif';
-				$secondaryFontFace 	= 'franchise';
-				break;
-			case 2:
-				$secondaryFontStack = '"Winterthur Condensed", Helvetica, Arial, Tahoma, sans-serif';
-				$secondaryFontFace 	= 'winterthur-condensed';
-				break;
-			case 3:
-				$secondaryFontStack = '"Yanone Kaffeesatz Regular", Helvetica, Arial, Tahoma, sans-serif';
-				$secondaryFontFace 	= 'yanone-kaffeesatz';
-				break;
-			case 4:
-				$secondaryFontStack = '"Bebas Neue", Helvetica, Arial, Tahoma, sans-serif';
-				$secondaryFontFace 	= 'bebas-neue';
-				break;
-			case 5:
-				$secondaryFontStack = 'Helvetica, Arial, Tahoma, Verdana, sans-serif';
-				break;
-			case 6:
-				$secondaryFontStack = 'Garamond, Avant Garde, Palatino, "Times New Roman", serif';
-				break;
-				
-		endswitch;
-		
-		if($secondaryFontFace)
-			echo "<link href='" . get_bloginfo('template_directory') . "/library/fonts/" . $secondaryFontFace . "/stylesheet.css' rel='stylesheet' type='text/css' />";
-
-		$custom_fonts .= "
-			#content h1,
-			#content h2,
-			#content h3,
-			#content h4,
-			#content h5,
-			#content h6, 
-			#discussion h1,
-			#discussion h2,
-			#discussion h3,
-			#discussion h4,
-			#discussion h5,
-			#discussion h6,
-			#header,
-			#header input,
-			#header button,
-			#footer,
-			.said,
-			.time,
-			.comment-reply-link,
-			#more a{ 
-				font-family: {$secondaryFontStack};
-				text-transform: uppercase;
-			}";
-
-	endif;
-
-	$custom_fonts .= "</style>";
-
-	if($custom_fonts)
-		echo $custom_fonts;
+  if( $normal_image_src )
+	  echo "<img width=\"$normal_width\" height=\"$normal_height\" src=\"$normal_image_src\"$retina_image$alt_text>";
+	else
+		echo false;
 
 }
-add_action('wp_head', 'custom_fonts');
 
-function custom_css(){
-    global $up_options;
-    $custom_css = '<style type="text/css">';
-    
-    	$custom_css .= '.list .hentry{width:' . get_option('medium_size_w') . 'px;}';
-	
-		if($up_options->linkcolor)
-			$custom_css .= "a{ color: ".$up_options->linkcolor.";}";
+/**
+ * Creates a nicely formatted and more specific title element text
+ * for output in head of document, based on current view.
+ *
+ * @since Evo 1.0
+ *
+ * @param string $title Default title text for current view.
+ * @param string $sep Optional separator.
+ * @return string Filtered title.
+ */
+function evo_wp_title( $title, $sep ) {
+	global $paged, $page;
 
-		if($up_options->hovercolor)
-			$custom_css .= "a:hover{ color: ".$up_options->hovercolor.";}";
+	if ( is_feed() )
+		return $title;
 
-		if($up_options->activecolor)
-			$custom_css .= "a:active{ color: ".$up_options->activecolor.";}";
+	// Add the site name.
+	$title .= get_bloginfo( 'name' );
 
-    $custom_css .= '</style>';
+	// Add the site description for the home/front page.
+	$site_description = get_bloginfo( 'description', 'display' );
+	if ( $site_description && ( is_home() || is_front_page() ) )
+		$title = "$title $sep $site_description";
 
-	echo $custom_css;
+	// Add a page number if necessary.
+	if ( $paged >= 2 || $page >= 2 )
+		$title = "$title $sep " . sprintf( __( 'Page %s', 'evo' ), max( $paged, $page ) );
+
+	return $title;
 }
-add_action('wp_head', 'custom_css');
+add_filter( 'wp_title', 'evo_wp_title', 10, 2 );
 
-// Create Header Ads
-function ads_below_header(){
-	global $up_options;
-
-  if($up_options->top_ads){ ?>
-  
-    <div id="ads_below_header">
-     <?php echo $up_options->top_ads; ?>
-    </div>
-    
-	<?php
-	}
-}
-add_action('evo_belowheader', 'ads_below_header');
-
-// Create Footer Ads
-function ads_above_footer(){
-	global $up_options;
-
-  if($up_options->bottom_ads){ ?>
-  
-    <div id="ads_above_footer">
-     <?php echo $up_options->bottom_ads; ?>
-    </div>
-    
-	<?php
-	}
-}
-add_action('evo_abovefooter', 'ads_above_footer');
-
-// Fix Thickbox image paths
-function thickbox_image_paths() {
-	global $post;
-	wp_reset_query();
-	if (is_singular()) {
-		$thickbox_path = get_option('siteurl') . '/wp-includes/js/thickbox/';
-		echo "<script type=\"text/javascript\">\n";
-		echo "	var tb_pathToImage = \"${thickbox_path}loadingAnimation.gif\";\n";
-		echo "	var tb_closeImage = \"${thickbox_path}tb-close.png\";\n";
-		echo "</script>\n";
-	}
-}
-add_action('wp_footer', 'thickbox_image_paths');
-
-// Function to get width of thumbnails
-function get_thumbnail_width($px=false){
-    
-    global $up_options;
-  
-  if($up_options->thumbnail_w){
-    $thumbnail_width = (int)$up_options->thumbnail_w;
-  } else {
-    $thumbnail_width = '125';
-  }
-  
-  if($px==true){
-    return $thumbnail_width . 'px';
-  }else{
-    return $thumbnail_width;
-  }
-  
-}
-
-// Function to get height of thumbnails
-function get_thumbnail_height($px=false){
-
-   global $up_options;
-  
-  if(isset($up_options->thumbnail_h)){
-    $thumbnail_height = (int)$up_options->thumbnail_h;
-  } else {
-    $thumbnail_height = '125';
-  }
-  
-  if($px==true){
-    return $thumbnail_height . 'px';
-  }else{
-    return $thumbnail_height;
-  }
-}
-
-function set_thumbnail_h_w(){
-	
-	global $up_options;
-	
-	if(isset($_POST['up_save'])):
-		
-		if($up_options->thumbnail_h):
-			update_option("thumbnail_size_h",$up_options->thumbnail_h);
-		endif;
-		
-		if($up_options->thumbnail_w):
-			update_option("thumbnail_size_w",$up_options->thumbnail_w);
-		endif;
-	
-	endif;
-}
-
-add_action('init','set_thumbnail_h_w');
-
-//  Gallery Child Theme Functions
-function childtheme_menu_args($args) {
-    $args = array(
-        'show_home' => 'Home',
-        'sort_column' => 'menu_order',
-        'menu_class' => 'menu',
-        'echo' => true
-    );
+/**
+ * Makes our wp_nav_menu() fallback -- wp_page_menu() -- show a home link.
+ *
+ * @since Evo 1.0
+ */
+function evo_page_menu_args( $args ) {
+	if ( ! isset( $args['show_home'] ) )
+		$args['show_home'] = true;
 	return $args;
 }
-add_filter('wp_page_menu_args', 'childtheme_menu_args');
+add_filter( 'wp_page_menu_args', 'evo_page_menu_args' );
 
-// 
-function theme_footer($themelink) {
-    global $up_options;
-    return $up_options->footertext;
+/**
+ * Registers our main widget area and the front page widget areas.
+ *
+ * @since Evo 1.0
+ */
+function evo_widgets_init() {
+	register_sidebar( array(
+		'name' => __( 'Main Sidebar', 'evo' ),
+		'id' => 'sidebar-1',
+		'description' => __( 'Appears on posts and pages.', 'evo' ),
+		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+		'after_widget' => '</aside>',
+		'before_title' => '<h3 class="widget-title">',
+		'after_title' => '</h3>',
+	) );
 }
-add_filter('evo_footertext', 'theme_footer');
+add_action( 'widgets_init', 'evo_widgets_init' );
 
-// Remove sidebar on gallery-style pages
-function remove_sidebar() {
-	global $post, $up_options;
-	if(!is_single()){
-		if(!$up_options->enablesidebar){
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	} elseif(get_post_meta($post->ID,"custom_post_template",true) == "blog.php"){
-		return TRUE;
+if ( ! function_exists( 'evo_content_nav' ) ) :
+/**
+ * Displays navigation to next/previous pages when applicable.
+ *
+ * @since Evo 1.0
+ */
+function evo_content_nav( $nav_id ) {
+	global $wp_query;
+
+	if ( $wp_query->max_num_pages > 1 ) : ?>
+		<nav id="<?php echo $nav_id; ?>" class="navigation" role="navigation">
+			<h3 class="assistive-text"><?php _e( 'Post navigation', 'evo' ); ?></h3>
+			<div class="nav-previous alignleft"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'evo' ) ); ?></div>
+			<div class="nav-next alignright"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'evo' ) ); ?></div>
+		</nav><!-- #<?php echo $nav_id; ?> .navigation -->
+	<?php endif;
+}
+endif;
+
+if ( ! function_exists( 'evo_comment' ) ) :
+/**
+ * Template for comments and pingbacks.
+ *
+ * To override this walker in a child theme without modifying the comments template
+ * simply create your own evo_comment(), and that function will be used instead.
+ *
+ * Used as a callback by wp_list_comments() for displaying the comments.
+ *
+ * @since Evo 1.0
+ */
+function evo_comment( $comment, $args, $depth ) {
+	$GLOBALS['comment'] = $comment;
+	switch ( $comment->comment_type ) :
+		case 'pingback' :
+		case 'trackback' :
+		// Display trackbacks differently than normal comments.
+	?>
+	<li <?php comment_class(); ?> id="comment-<?php comment_ID(); ?>">
+		<p><?php _e( 'Pingback:', 'evo' ); ?> <?php comment_author_link(); ?> <?php edit_comment_link( __( '(Edit)', 'evo' ), '<span class="edit-link">', '</span>' ); ?></p>
+	<?php
+			break;
+		default :
+		// Proceed with normal comments.
+		global $post;
+	?>
+	<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+		<article id="comment-<?php comment_ID(); ?>" class="comment">
+			<header class="comment-meta comment-author vcard">
+				<?php
+					echo get_avatar( $comment, 44 );
+					printf( '<cite class="fn">%1$s %2$s</cite>',
+						get_comment_author_link(),
+						// If current post author is also comment author, make it known visually.
+						( $comment->user_id === $post->post_author ) ? '<span> ' . __( 'Post author', 'evo' ) . '</span>' : ''
+					);
+					printf( '<a href="%1$s"><time datetime="%2$s">%3$s</time></a>',
+						esc_url( get_comment_link( $comment->comment_ID ) ),
+						get_comment_time( 'c' ),
+						/* translators: 1: date, 2: time */
+						sprintf( __( '%1$s at %2$s', 'evo' ), get_comment_date(), get_comment_time() )
+					);
+				?>
+			</header><!-- .comment-meta -->
+
+			<?php if ( '0' == $comment->comment_approved ) : ?>
+				<p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'evo' ); ?></p>
+			<?php endif; ?>
+
+			<section class="comment-content comment">
+				<?php comment_text(); ?>
+				<?php edit_comment_link( __( 'Edit', 'evo' ), '<p class="edit-link">', '</p>' ); ?>
+			</section><!-- .comment-content -->
+
+			<div class="reply">
+				<?php comment_reply_link( array_merge( $args, array( 'reply_text' => __( 'Reply <span>&darr;</span>', 'evo' ), 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
+			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+	<?php
+		break;
+	endswitch; // end comment_type check
+}
+endif;
+
+if ( ! function_exists( 'evo_entry_meta' ) ) :
+/**
+ * Prints HTML with meta information for current post: categories, tags, permalink, author, and date.
+ *
+ * Create your own evo_entry_meta() to override in a child theme.
+ *
+ * @since Evo 1.0
+ */
+function evo_entry_meta() {
+	// Translators: used between list items, there is a space after the comma.
+	$categories_list = get_the_category_list( __( ', ', 'evo' ) );
+
+	// Translators: used between list items, there is a space after the comma.
+	$tag_list = get_the_tag_list( '', __( ', ', 'evo' ) );
+
+	$date = sprintf( '<a href="%1$s" title="%2$s" rel="bookmark"><time class="entry-date" datetime="%3$s">%4$s</time></a>',
+		esc_url( get_permalink() ),
+		esc_attr( get_the_time() ),
+		esc_attr( get_the_date( 'c' ) ),
+		esc_html( get_the_date() )
+	);
+
+	$author = sprintf( '<span class="author vcard"><a class="url fn n" href="%1$s" title="%2$s" rel="author">%3$s</a></span>',
+		esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
+		esc_attr( sprintf( __( 'View all posts by %s', 'evo' ), get_the_author() ) ),
+		get_the_author()
+	);
+
+	// Translators: 1 is category, 2 is tag, 3 is the date and 4 is the author's name.
+	if ( $tag_list ) {
+		$utility_text = __( 'This entry was posted in %1$s and tagged %2$s on %3$s<span class="by-author"> by %4$s</span>.', 'evo' );
+	} elseif ( $categories_list ) {
+		$utility_text = __( 'This entry was posted in %1$s on %3$s<span class="by-author"> by %4$s</span>.', 'evo' );
+	} else {
+		$utility_text = __( 'This entry was posted on %3$s<span class="by-author"> by %4$s</span>.', 'evo' );
 	}
+
+	printf(
+		$utility_text,
+		$categories_list,
+		$tag_list,
+		$date,
+		$author
+	);
 }
+endif;
 
-  add_filter('evo_sidebar', 'remove_sidebar');
+/**
+ * Extends the default WordPress body class to denote:
+ * 1. Using a full-width layout, when no active widgets in the sidebar
+ *    or full-width template.
+ * 2. Front Page template: thumbnail in use and number of sidebars for
+ *    widget areas.
+ * 3. White or empty background color to change the layout and spacing.
+ * 4. Custom fonts enabled.
+ * 5. Single or multiple authors.
+ *
+ * @since Evo 1.0
+ *
+ * @param array Existing class values.
+ * @return array Filtered class values.
+ */
+function evo_body_class( $classes ) {
+	$background_color = get_background_color();
 
-//get thumbnail
-function postimage($size=medium) {
-	global $post;
-	global $up_options;
+	if ( ! is_active_sidebar( 'sidebar-1' ) || is_page_template( 'page-templates/full-width.php' ) )
+		$classes[] = 'full-width';
+
+	if ( is_page_template( 'page-templates/front-page.php' ) ) {
+		$classes[] = 'template-front-page';
+		if ( has_post_thumbnail() )
+			$classes[] = 'has-post-thumbnail';
+		if ( is_active_sidebar( 'sidebar-2' ) && is_active_sidebar( 'sidebar-3' ) )
+			$classes[] = 'two-sidebars';
+	}
+
+	if ( empty( $background_color ) )
+		$classes[] = 'custom-background-empty';
+	elseif ( in_array( $background_color, array( 'fff', 'ffffff' ) ) )
+		$classes[] = 'custom-background-white';
+
+	// Enable custom font class only if the font CSS is queued to load.
+	if ( wp_style_is( 'evo-fonts', 'queue' ) )
+		$classes[] = 'custom-font-enabled';
+
+	if ( ! is_multi_author() )
+		$classes[] = 'single-author';
+
+	return $classes;
+}
+add_filter( 'body_class', 'evo_body_class' );
+
+/**
+ * Add postMessage support for site title and description for the Theme Customizer.
+ *
+ * @since Evo 1.0
+ *
+ * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+ * @return void
+ */
+function evo_customize_register( $wp_customize ) {
+	$wp_customize->get_setting( 'blogname' )->transport = 'postMessage';
+	$wp_customize->get_setting( 'blogdescription' )->transport = 'postMessage';
+}
+add_action( 'customize_register', 'evo_customize_register' );
+
+/**
+ * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
+ *
+ * @since Evo 1.0
+ */
+function evo_customize_preview_js() {
+	wp_enqueue_script( 'evo-customizer', get_template_directory_uri() . '/js/theme-customizer.js', array( 'customize-preview' ), '20120827', true );
+}
+add_action( 'customize_preview_init', 'evo_customize_preview_js' );
+
+
+/**
+ * Displays heading text with post count
+ *
+ * @since Evo 1.0
+ */
+function evo_list_header(){
 	
-	if ( $images = get_children(array(
-		'post_parent' => get_the_ID(),
-		'post_type' => 'attachment',
-		'numberposts' => 1,
-		'order' => 'ASC',
-		'post_mime_type' => 'image',)))
-	{
-		foreach( $images as $image ) {
-
-			$attachmentimage_thumb_src=wp_get_attachment_image_src( $image->ID, 'thumbnail' );
-			$attachmentimage_medium=wp_get_attachment_image( $image->ID, 'medium' );
-			$attachmentimage_src=wp_get_attachment_image_src( $image->ID, $size );
-				
-
-	  		echo '<img src="' . $attachmentimage_src[0] . ' class="thumbnail" alt="' . attribute_escape($post->post_title) . '" />';
+	global $wpdb,$wp_query;
 	
-		}
-	} 
-}
+	if(is_category()):
+		$catID = get_query_var('cat');
+		$post_count = (int) get_category($catID)->count;
+	elseif(is_tag()):
+		$tagID = get_query_var('tag');
+		$post_count = (int) get_category($tagID)->count;
+	elseif(is_home() || is_front_page()):
+		$post_count = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts WHERE post_status = 'publish' AND post_type ='post'");
+		if (0 < $post_count)
+			$post_count = (int)$post_count; 
+	endif;
 
-//get images
-function postimages($size=medium) {
+	$page = get_query_var('paged');
+	$posts_per_page = get_option('posts_per_page');
+						
+	if($page == 0):
+		$starting_post = 1;
+		$ending_post = (int)$posts_per_page;
+	else:
+		$starting_post = (int)(($page-1) * $posts_per_page);
+		$ending_post = (int)((($page-1) * $posts_per_page) + $posts_per_page);
+	endif;
 
-    global $up_options;
-
-	if ( $images = get_children(array(
-		'post_parent' => get_the_ID(),
-		'post_type' => 'attachment',
-		'order' => 'ASC',
-		'post_mime_type' => 'image',)))
-	{
-		
-		if(count($images) > 1):
-		
-			$slideshow = true;
-		
-		endif;
-		
-		if($slideshow == true):
-		
-			echo '<div id="myController"></div><!--/#myController-->
-
-										<div id="featured-wrapper">
-											<div id="featured">
-												<div id="mySlides">';
-
-		endif;
-		
-		foreach( $images as $image ) {
-
-			$attachmentimage_medium=wp_get_attachment_image( $image->ID, 'medium' );
-			$attachmentimage_src=wp_get_attachment_image_src( $image->ID, $size );
-			$attachmentimage_large_src=wp_get_attachment_image_src( $image->ID, 'large' );
-
-			echo '<div class="jFlowSlideContainer"><img src="' . $attachmentimage_src[0] . '" ' . $attributes . ' alt="' . attribute_escape($post->post_title) . '" /></div>';
-
-		}
-
-		if($slideshow == true):
-		
-			echo '								</div><!--/#mySlides-->
-										
-										
-											</div><!--/#featured-wrapper-->
-										</div><!--/#products-->';
-
-		endif;
-
-
-	} 
-}
-
-//check any attachment 
-function checkimage($size=medium) {
-	if ( $images = get_children(array(
-		'post_parent' => get_the_ID(),
-		'post_type' => 'attachment',
-		'numberposts' => 1,
-		'post_mime_type' => 'image',)))
-	{
-		foreach( $images as $image ) {
-			$attachmentimage=wp_get_attachment_image( $image->ID, $size );
-			return $attachmentimage;
-		}
-	} 
-}
-
-// Remove Navigation Above & Below
-function remove_navigation() {
-  remove_action('evo_navigation_above', 'evo_nav_above', 2);
-  remove_action('evo_navigation_below', 'evo_nav_below', 2);
-}
-add_action('init', 'remove_navigation');
-
-// re-create evo_nav_below
-
-function gallery_nav_below() {
-?>
-
-		<div id="more">
-			<?php next_posts_link(__('Load More Images', 'evo')) ?>
-        </div>
+	if($ending_post > $post_count)
+		$ending_post = $post_count;
 	
+	?>
+
+  <h2>
+    <?php
+    if(is_category()):
+      echo single_cat_title() . " ";               
+    elseif(is_tag()):
+      echo single_tag_title() . " ";               
+    endif;
+    ?>
+    <span class="pagination">
+    <?php
+    $pagination = __('Showing %1$s - %2$s of %3$s','evo');
+    printf($pagination, $starting_post, $ending_post, $post_count); ?>
+    </span>
+  </h2>
 <?php
-
 }
 
-add_action('evo_navigation_below', 'gallery_nav_below');
-
-// Filter the Page Title
-function gallery_page_title ($content) {
-  if (is_category()) {
-    $content = '<h1 class="page-title"><span>';
-    $content .= single_cat_title("", false);
-    $content .= '</span></h1>';
-    if ( !(''== category_description()) ) {
-	$content .= '<div class="archive-meta">';
-	$content .= apply_filters('archive_meta', category_description());
-	$content .= '</div>';
-    }
-  } elseif (is_tag()) {
-    $content = '<h1 class="page-title"><span>';
-    $content = evo_tag_query();
-    $content = '</span></h1>';
-  }
-  return $content;
+/**
+ *  Post navigation functionality
+ *
+ * @since Evo 1.0
+ */
+function evo_navigation_below() {
+  if ( is_single() ): ?>
+	<div id="nav-below" class="navigation">
+		<div class="nav-previous"><?php evo_previous_post_link() ?></div>
+		<div class="nav-next"><?php evo_next_post_link() ?></div>
+	</div>
+<?php else: ?>
+  <div id="more">
+	  <?php next_posts_link( __('Load More', 'evo') ) ?>
+  </div>
+<?php
+  endif;
 }
-add_filter('evo_page_title', 'gallery_page_title');
-// End of Filter the Page Title
-
-// UpThemes Admin Functions
-require_once('admin/admin.php');
