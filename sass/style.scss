@@ -7,34 +7,71 @@ Author URI: http://upthemes.com
 Version: 1.4
 */
 
+$primaryColor: #aa1f25;
+$textColor: #222;
+$siteWidth: 1200px;
+
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Norican);
+
 @import "compass/reset";
 @import "compass/css3";
 @import "menu";
-
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Nixie+One);
+@import "header";
+@import "footer";
 
 body {
   color: #222;
-  background: #eeeeee url("images/body-bg.jpg");
+  background: #eee url("images/tex2res5.png");
   font: 14px / 21px "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, Sans-serif;
 }
 
-a {
-  color: #222;
-  text-decoration: none;
-
-  &:link, &:visited {
-    color: #222;
-    text-decoration: none;
-  }
-
-  &:hover, &:active {
-    color: #F30;
+@media screen and (-webkit-min-device-pixel-ratio: 2), screen and (max--moz-device-pixel-ratio: 2) {
+  body{ 
+      background-image: url("images/tex2res5@2x.png") no-repeat;
   }
 }
 
-h1,h2,h3,h4,h5,h6{
+a {
+  color: $textColor;
+  text-decoration: none;
+
+  &:visited{
+    color: $textColor;
+    text-decoration: none;
+  }
+
+  &:hover{
+    color: $primaryColor;
+  }
+}
+
+#blog-title{
+  font-family: "Norican";
+}
+
+h1,h2,h3,h4,h5,h6,#blog-title{
   font-weight: bold;
+  line-height: auto;
+}
+
+h1{
+  font-size: 2em;
+}
+
+h2{
+  font-size: 1.6em;
+}
+
+h3{
+  font-size: 1.3em;
+}
+
+h4{
+  font-size: 1.2em;
+}
+
+h5,h6{
+  font-size: 1em;
 }
 
 code {
@@ -45,9 +82,20 @@ code {
   display: none;
 }
 
-#form-allowed-tags {
+// Curved Edges for stuff
+.widget,
+.hentry{
+  background-color: white;
+  border-radius: 4px;
+}
+
+.hentry{
+  @include box-shadow(0 1px 6px rgba(0,0,0,.2),0 0 1px rgba(0,0,0,0.7));
+}
+
+#form-allowed-tags{
   font-size: 11px;
-  line-height: 21px;
+  line-height: 16px;
   code {
     font-size: 11px;
     line-height: 21px;
@@ -55,14 +103,6 @@ code {
   span {
     font-weight: bold;
   }
-}
-
-span.tag {
-  white-space: nowrap;
-}
-
-#discussion, #footer {
-  @include text-shadow(0 1px 0 #fff);
 }
 
 #wrapper {
@@ -76,48 +116,30 @@ span.tag {
   background: white url("images/ajax-loader.gif") no-repeat center 100px;
 }
 
-.hentry {
-  h2 {
-    font-size: 1.4em;
-    margin-bottom: 0;
-  }
-  p {
-    margin-top: 5px;
-    font-size: 0.9em;
-  }
-}
+.archive #content,
+.home #content{
+  max-width: 1280px;
+  margin: 0 auto;
 
-.list .hentry {
-  width: 200px;
+  .hentry {
+    width: 260px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+  }
 }
 
 .clear{
   clear: both;
 }
 
-#header {
-  padding: 40px 0 0 0;
-  font-size: 14px;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-  background-color: white;
 
-  #blog-title {
-    position: relative;
-    font-size: 1.8em;
-    font-weight: bold;
-    margin-bottom: .25em;
-  }
+#wrapper{
+  margin-top: 152px-28px;
+}
 
-  #blog-description{
-    margin-bottom: 40px;
-  }
-
-  #access {
-    display: block;
-    border-top:1px solid #eee;
-  }
-
+.logged-in #wrapper{
+  margin-top: 152px;
 }
 
 h1.page-title {
@@ -128,31 +150,23 @@ h1.page-title {
   vertical-align: middle;
 }
 
-.list {
-  padding-top: 10px;
-
-  h2 {
-    display: block;
-    padding: 5px 0;
-    text-align: center;
-    color: #777;
-    margin-bottom: 20px;
-
-    img {
-      vertical-align: middle;
-      position: relative;
-      margin-top: -5px;
-    }
-  }
-}
-
 #masonry {
   clear: both;
 }
 
-#content {
-  h3.title {
-    margin: 15px 0;
+.wp-post-image,
+.entry-title,
+.category{
+  margin-bottom: 1em;
+}
+
+.singular #content {
+  padding: 20px 0;
+
+  .entry-title{
+    font-size: 1em;
+    font-family: "Source Sans Pro";
+    margin-bottom: .5em;
   }
 
   .author {
@@ -163,106 +177,62 @@ h1.page-title {
     }
   }
 
-  .pre_meta {
-    padding: 10px 0;
-
-    div {
-      display: inline;
-    }
-  }
-  .category {
-
-    font-weight: bold;
-
-    a {
-      font-weight: bold;
-    }
-  }
-
-  .post-content {
-    width: 100%;
-    max-width: 960px;
-    min-width: 580px;
-  }
-
-  .category a, .tag a {
+  .tag a {
+    font-size: .8em;
     margin-bottom: 10px;
-    background-color: #888;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 6px;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
+    border: 1px solid #eee;
+    display: inline-block;
+    padding: 2px 5px;
+    @include border-radius(6px);
+
+    &:hover {
+      background-color: $primaryColor;
+      color: white;
+    }
   }
 
-  .category a:hover, .tag a:hover {
-    background-color: #F30;
-  }
-
-  .category a:active, .tag a:active {
-    margin-top: 1px;
-    margin-bottom: -1px;
-    position: relative;
-  }
-
-  .has-category {
-    margin-top: 0;
-  }
-
-  .has-tags, .has-author {
-    margin-bottom: 0;
-  }
-
-  .meta {
+  .post-meta {
     margin-bottom: 1em;
   }
 
-  p {
-    margin-top: 0;
-  }
+}
 
-  &.page > div {
-    max-width: 960px;
-    width: 100%;
-    min-width: 650px;
-  }
+#infscr-loading{
+  text-align: center;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999;
+  color: white;
+  background-color: rgba(0,0,0,0.8);
+  padding: 10px;
+  @include border-radius(4px);
 }
 
 #more a {
   color: white;
-  background-color: white;
-  border-radius: 6px;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  background-color: #555;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: $primaryColor;
   display: block;
   text-align: center;
-  padding: 10px;
-  font-size: 1.6em;
-  text-shadow: 0 -1px 0 #333333;
-  -moz-text-shadow: 0 -1px 0 #333333;
-  -webkit-text-shadow: 0 -1px 0 #333333;
+  padding: 15px 10px;
+  font-weight: bold;
+  font-size: 1.4em;
+  text-transform: uppercase;
+  letter-spacing: -.04em;
+  @include border-radius(6px);
+  @include text-shadow(0 -1px 0 darken($primaryColor,5%));
 
   &:hover {
-    background-color: #444;
-    @include text-shadow(0 -1px 0 #222222);
+    background-color: darken($primaryColor,5%);
+    @include text-shadow(0 -1px 0 darken($primaryColor,15%));
   }
 
   &:active {
-    background-color: #F30;
+    background-color: $primaryColor;
     padding-top: 11px;
     padding-bottom: 9px;
     @include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.2));
   }
-}
-
-#invisiload {
-  display: none;
-}
-
-.author .pagination, .tag .pagination, .search .pagination, .category .pagination {
-  float: right;
 }
 
 /* Aside Styles */
@@ -270,8 +240,7 @@ h1.page-title {
 .aside {
   margin: 20px;
 
-  .widgetcontainer {
-    width: 220px;
+  .widget {
     padding: 20px;
     border: 3px solid #9F9F9F;
     background-color: #fff;
@@ -337,41 +306,37 @@ h1.page-title {
   margin-right: 20px;
 }
 
-.single .hentry, .page .hentry {
-  float: none;
-  margin-right: auto;
-}
-
-#content, .widget {
-  border-radius: 4px;
-}
-
 .single {
   #container {
-    width: 1120px;
+    width: $siteWidth;
     margin: 20px auto;
   }
 
   #content {
     float: left;
-    width: 660px;
-    margin-right: 20px;
+    width: 70%;
+    margin-right: 2%;
+    background-color: white;
+  }
+
+  .hentry{
+    padding: 0 20px 20px;
   }
 
   #secondary {
     float: left;
-    width: 300px;
-  }
-}
+    width: 28%;
 
-.widget {
-  padding: 20px;
-  background: #fff;
-  margin-bottom: 20px;
+    .widget {
+      padding: 20px;
+      background: #fff;
+      margin-bottom: 20px;
 
-  h3 {
-    font-size: 1em;
-    font-weight: bold;
+      h3 {
+        font-size: 1em;
+        font-weight: bold;
+      }
+    }
   }
 }
 
@@ -529,42 +494,8 @@ h1.page-title {
 
 /* Gallery Styles */
 
-#myController {
-  font-size: 1.1em;
-  margin-bottom: 10px;
-  position: relative;
-}
-
-#content, #footer {
-  padding: 20px;
-}
-
 #discussion {
   margin-top: 40px;
   border-top: 2px solid #eee;
   padding-top: 20px;
-}
-
-#content {
-  background-color: white;
-  border-bottom: 3px solid #9F9F9F;
-}
-
-#featured-wrapper {
-  clear: both;
-}
-
-#footer {
-  clear: both;
-  font-size: 0.94em;
-  color: #666;
-  padding-bottom: 400px;
-
-  .menu {
-    display: inline;
-
-    ul {
-      display: inline;
-    }
-  }
 }

@@ -1,0 +1,34 @@
+#footer {
+  margin-top: 40px;
+  background: white;
+  font-size: 0.94em;
+  color: #666;
+  padding: 40px 0;
+
+  .inner{
+    max-width: $siteWidth;
+    margin: 0 auto;
+  }
+
+  .widget-area{
+    overflow: auto;
+  }
+
+  .widget{
+    width: 31%;
+    margin-right: 2%;
+    float: left;
+
+    :nth-child(3n+1){
+      clear: both;
+    }  
+  }
+
+  .menu {
+    display: inline;
+
+    ul {
+      display: inline;
+    }
+  }
+}

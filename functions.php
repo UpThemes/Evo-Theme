@@ -62,18 +62,19 @@ function evo_setup() {
 
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menu( 'primary_nav', __( 'Primary Menu', 'evo' ) );
+	register_nav_menu( 'footer_nav', __( 'Footer Menu', 'evo' ) );
 
-  add_image_size('full-width',660,99999,false);
-  add_image_size('full-width-2x',1320,99999,false);
-  add_image_size('grid',200,200,false);
-  add_image_size('grid-2x',400,400,false);
+  add_image_size('full-width',800,99999,false);
+  add_image_size('full-width-2x',1600,99999,false);
+  add_image_size('grid',260,260,false);
+  add_image_size('grid-2x',520,520,false);
 
 	/*
 	 * This theme supports custom background color and image, and here
 	 * we also set up the default background color.
 	 */
 	add_theme_support( 'custom-background', array(
-		'default-color' => 'ffffff',
+		'default-color' => 'f2f2f2f2',
 	) );
 
 	// This theme uses a custom image size for featured images, displayed on "standard" posts.
@@ -104,12 +105,12 @@ function evo_scripts_styles() {
 	wp_enqueue_script( 'evo-navigation', get_template_directory_uri() . '/js/navigation.js', false );
   wp_enqueue_script( 'evo-hoverIntent', get_template_directory_uri() . '/js/hoverIntent.js', false );
   wp_enqueue_script( 'evo-retina', get_template_directory_uri() . '/js/jquery.retina.js', false );
-  wp_enqueue_script( 'evo-onImagesLoad', get_template_directory_uri() . '/js/jquery.onImagesLoad.js', false );
-  wp_enqueue_script( 'evo-masonry', get_template_directory_uri() . '/js/jquery.masonry.js', array('jquery','evo-hoverIntent') );
+  wp_enqueue_script( 'evo-infinitescroll', get_template_directory_uri() . '/js/jquery.infinitescroll.js', array('jquery') );
+  wp_enqueue_script( 'evo-masonry', get_template_directory_uri() . '/js/jquery.masonry.js', array('evo-infinitescroll') );
   wp_enqueue_script( 'evo-scrollTo', get_template_directory_uri() . '/js/jquery.scrollTo.js', array('evo-masonry') );
   wp_enqueue_script( 'evo-superfish', get_template_directory_uri() . '/js/superfish.js' );
   wp_enqueue_script( 'evo-supersubs', get_template_directory_uri() . '/js/supersubs.js', array('evo-superfish') );
-  wp_enqueue_script( 'evo-global', get_template_directory_uri() . '/js/global.js', array('evo-retina','evo-scrollTo','evo-supersubs','evo-navigation','evo-onImagesLoad') );
+  wp_enqueue_script( 'evo-global', get_template_directory_uri() . '/js/global.js', array('evo-infinitescroll','evo-retina','evo-scrollTo','evo-supersubs','evo-navigation') );
 
 	/*
 	 * Loads our main stylesheet.
@@ -117,6 +118,17 @@ function evo_scripts_styles() {
 	wp_enqueue_style( 'evo-style', get_stylesheet_uri() );
 }
 add_action( 'wp_enqueue_scripts', 'evo_scripts_styles' );
+
+function evo_set_loading_gif_location(){
+	$template_directory = get_template_directory_uri();
+	echo "<script>"."\n";
+	echo "var global = {"."\n";
+	echo "	loading : '$template_directory/images/loading.gif'"."\n";
+	echo "}"."\n";
+	echo "</script>"."\n\n";
+}
+
+add_action("wp_head","evo_set_loading_gif_location",0);
 
 function evo_post_thumbnail( $size ){
 
@@ -154,7 +166,7 @@ function evo_post_thumbnail( $size ){
     $alt_text = '';
 
   if( $normal_image_src )
-	  echo "<img width=\"$normal_width\" height=\"$normal_height\" src=\"$normal_image_src\"$retina_image$alt_text>";
+	  echo "<img class=\"wp-post-image\" width=\"$normal_width\" height=\"$normal_height\" src=\"$normal_image_src\"$retina_image$alt_text>";
 	else
 		echo false;
 
@@ -214,6 +226,15 @@ function evo_widgets_init() {
 		'name' => __( 'Main Sidebar', 'evo' ),
 		'id' => 'sidebar-1',
 		'description' => __( 'Appears on posts and pages.', 'evo' ),
+		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+		'after_widget' => '</aside>',
+		'before_title' => '<h3 class="widget-title">',
+		'after_title' => '</h3>',
+	) );
+	register_sidebar( array(
+		'name' => __( 'Footer', 'evo' ),
+		'id' => 'sidebar-footer',
+		'description' => __( 'Appears on footer.', 'evo' ),
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
 		'after_widget' => '</aside>',
 		'before_title' => '<h3 class="widget-title">',
