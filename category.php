@@ -2,19 +2,23 @@
 
   <div id="container" class="cf">
 
-    <h1 class="category-title"><?php _e("Tag Archive:","evo"); ?> <?php single_cat_title(); ?></h1>
-
     <div id="content">
 
-			<?php if( have_posts() ): while ( have_posts() ) : the_post(); ?>
+      <h1 class="category-title"><?php _e("Category Archive:","evo"); ?> <?php single_cat_title(); ?></h1>
 
-      <?php get_template_part( 'content', get_post_format() ); ?>
+      <div id="masonry">
 
-      <?php endwhile; else: ?>
+        <?php if( have_posts() ): while ( have_posts() ) : the_post(); ?>
 
-      <?php get_template_part( 'content', 'none' ); ?>
+        <?php get_template_part( 'content', get_post_format() ); ?>
 
-      <?php endif; ?>
+        <?php endwhile; else: ?>
+
+        <?php get_template_part( 'content', 'none' ); ?>
+
+        <?php endif; ?>
+
+      </div><!-- /#masonry -->
 
     </div><!-- /#content -->
 

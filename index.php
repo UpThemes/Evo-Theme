@@ -4,15 +4,19 @@
 
     <div id="content">
 
-			<?php if( have_posts() ): while ( have_posts() ) : the_post(); ?>
+      <div id="masonry">
 
-      <?php get_template_part( 'content', get_post_format() ); ?>
+  			<?php if( have_posts() ): while ( have_posts() ) : the_post(); ?>
 
-      <?php endwhile; else: ?>
+        <?php get_template_part( 'content', get_post_format() ); ?>
 
-      <?php get_template_part( 'content', 'none' ); ?>
+        <?php endwhile; else: ?>
 
-      <?php endif; ?>
+        <?php get_template_part( 'content', 'none' ); ?>
+
+        <?php endif; ?>
+
+      </div><!-- /#masonry -->
 
     </div><!-- /#content -->
 

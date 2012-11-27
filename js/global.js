@@ -12,7 +12,7 @@
 
     $('img[data-retina]').retina({ checkIfImageExists: true });
 
-    $container = $(".archive,.home").find('#content');
+    $container = $("#masonry");
 
     $container.imagesLoaded(function(){
       $container.masonry(masonry_options);

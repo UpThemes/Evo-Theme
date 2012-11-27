@@ -7,6 +7,11 @@
 .home #content{
   max-width: $siteWidth;
   margin: 0 auto;
+}
+
+#masonry{
+  max-width: $siteWidth;
+  margin: 0 auto;
 
   .hentry {
     width: 260px;

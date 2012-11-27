@@ -281,8 +281,11 @@ li.sfHover > a > .sf-sub-indicator {
 .home #content {
   max-width: 1260px;
   margin: 0 auto; }
-  .archive #content .hentry,
-  .home #content .hentry {
+
+#masonry {
+  max-width: 1260px;
+  margin: 0 auto; }
+  #masonry .hentry {
     width: 260px;
     padding: 20px;
     margin-bottom: 20px;
@@ -604,8 +607,6 @@ textarea {
 .category-title,
 .archive-title,
 .tag-title {
-  max-width: 1260px;
-  margin: 0 auto;
   text-align: center;
   padding-bottom: 1em;
   margin-bottom: 1em;
