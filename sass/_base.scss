@@ -1,0 +1,54 @@
+body {
+  color: #222;
+  background: #eee url("images/tex2res5.png");
+  font: 14px / 21px $primaryFontFamily;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2), screen and (max--moz-device-pixel-ratio: 2) {
+  body{ 
+      background-image: url("images/tex2res5@2x.png") no-repeat;
+  }
+}
+
+a {
+  color: $textColor;
+  text-decoration: none;
+
+  &:visited{
+    color: $textColor;
+    text-decoration: none;
+  }
+
+  &:hover{
+    color: $primaryColor;
+  }
+}
+
+h1,h2,h3,h4,h5,h6,#blog-title{
+  font-weight: bold;
+  line-height: auto;
+}
+
+h1{
+  font-size: 2em;
+}
+
+h2{
+  font-size: 1.6em;
+}
+
+h3{
+  font-size: 1.3em;
+}
+
+h4{
+  font-size: 1.2em;
+}
+
+h5,h6{
+  font-size: 1em;
+}
+
+code {
+  font-family: "Courier New", Courier, monospace;
+}

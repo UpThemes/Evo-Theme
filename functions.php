@@ -26,7 +26,7 @@
  * Sets up the content width value based on the theme's design and stylesheet.
  */
 if ( ! isset( $content_width ) )
-	$content_width = 660;
+	$content_width = 700;
 
 /**
  * Sets up theme defaults and registers the various WordPress features that
@@ -64,8 +64,8 @@ function evo_setup() {
 	register_nav_menu( 'primary_nav', __( 'Primary Menu', 'evo' ) );
 	register_nav_menu( 'footer_nav', __( 'Footer Menu', 'evo' ) );
 
-  add_image_size('full-width',800,99999,false);
-  add_image_size('full-width-2x',1600,99999,false);
+  add_image_size('full-width',660,99999,false);
+  add_image_size('full-width-2x',1320,99999,false);
   add_image_size('grid',260,260,false);
   add_image_size('grid-2x',520,520,false);
 

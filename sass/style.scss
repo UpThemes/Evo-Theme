@@ -7,77 +7,23 @@ Author URI: http://upthemes.com
 Version: 1.4
 */
 
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Norican);
+
+$primaryFontFamily: "Source Sans Pro";
+$secondaryFontFamily: "Norican";
 $primaryColor: #aa1f25;
 $textColor: #222;
 $siteWidth: 1260px;
 
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Norican);
-
 @import "compass/reset";
 @import "compass/css3";
-@import "menu";
+@import "base";
 @import "header";
+@import "menu";
 @import "post";
+@import "comments";
+@import "sidebar";
 @import "footer";
-
-body {
-  color: #222;
-  background: #eee url("images/tex2res5.png");
-  font: 14px / 21px "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, Sans-serif;
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2), screen and (max--moz-device-pixel-ratio: 2) {
-  body{ 
-      background-image: url("images/tex2res5@2x.png") no-repeat;
-  }
-}
-
-a {
-  color: $textColor;
-  text-decoration: none;
-
-  &:visited{
-    color: $textColor;
-    text-decoration: none;
-  }
-
-  &:hover{
-    color: $primaryColor;
-  }
-}
-
-#blog-title{
-  font-family: "Norican";
-}
-
-h1,h2,h3,h4,h5,h6,#blog-title{
-  font-weight: bold;
-  line-height: auto;
-}
-
-h1{
-  font-size: 2em;
-}
-
-h2{
-  font-size: 1.6em;
-}
-
-h3{
-  font-size: 1.3em;
-}
-
-h4{
-  font-size: 1.2em;
-}
-
-h5,h6{
-  font-size: 1em;
-}
-
-code {
-  font-family: "Courier New", Courier, monospace;
-}
 
 .screen-reader-text {
   display: none;
@@ -87,10 +33,44 @@ code {
   clear: both;
 }
 
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
+}
+
+#content img{
+  max-width: 100%;
+  height: auto;
+}
+
 .widget,
 .hentry{
-  background-color: white;
   border-radius: 4px;
+}
+
+.category-title,
+.archive-title,
+.tag-title{
+  max-width: $siteWidth;
+  margin: 0 auto;
+  text-align: center;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  font-size: 1.6em;
+  border-bottom: 2px solid rgba(0,0,0,.07);
 }
 
 #form-allowed-tags{
@@ -134,10 +114,10 @@ code {
   display: block;
   text-align: center;
   padding: 15px 10px;
+  margin: 0 20px;
   font-weight: bold;
   font-size: 1.4em;
   text-transform: uppercase;
-  letter-spacing: -.04em;
   @include border-radius(6px);
   @include text-shadow(0 -1px 0 darken($primaryColor,5%));
 
@@ -152,227 +132,4 @@ code {
     padding-bottom: 9px;
     @include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.2));
   }
-}
-
-/* Aside Styles */
-
-.aside {
-  margin: 20px;
-
-  .widget {
-    padding: 20px;
-    border: 3px solid #9F9F9F;
-    background-color: #fff;
-    float: left;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    font-size: 0.9em;
-
-    h3 {
-      font-size: 1.1em;
-      font-weight: bold;
-    }
-
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    li {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      border-bottom: 1px solid #eee;
-
-      &:first-child {
-        border-top: 1px solid #eee;
-      }
-
-      a {
-        padding: 3px 0;
-        display: block;
-
-        &:hover {
-          background-color: #f2f2f2;
-          padding-left: 8px;
-        }
-      }
-    }
-  }
-
-  input {
-    &[type="text"], &[type="password"] {
-      max-width: 200px;
-    }
-  }
-
-  select {
-    max-width: 200px;
-  }
-}
-
-#searchform {
-  min-width: auto;
-  max-width: auto;
-  width: auto;
-}
-
-/* Comment Styles */
-
-#comments, #respond {
-  margin-top: 20px;
-}
-
-#comments h3, #respond h3 {
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 1.8em;
-  color: #444;
-}
-
-#comments ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-
-  li {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    clear: both;
-    margin-bottom: 20px;
-  }
-}
-
-.unapproved {
-  padding: 8px 16px;
-  display: block;
-  margin: 5px 0 5px 85px;
-  background-color: rgba(255, 236, 31, 0.6);
-  border: 3px solid rgb(255, 236, 31);
-}
-
-#comments ol li, .formcontainer {
-  margin-left: -20px;
-  margin-bottom: 20px;
-  background-color: white;
-  border: 3px solid #9F9F9F;
-  border-radius-topright: 2px;
-  border-radius-bottomright: 2px;
-  -moz-border-radius-topright: 2px;
-  -moz-border-radius-bottomright: 2px;
-  -webkit-border-top-right-radius: 2px;
-  -webkit-border-bottom-right-radius: 2px;
-  border-left: none;
-  width: 550px;
-  padding: 20px;
-}
-
-#comments ol {
-  .children {
-    li, .formcontainer {
-      margin-top: 5px;
-      margin-left: 0;
-      margin-bottom: 0;
-      background-color: #eee;
-      border: 3px solid #ddd;
-      border-radius: 2px;
-      -moz-border-radius: 2px;
-      -webkit-border-radius: 2px;
-      width: auto;
-      padding: 20px;
-    }
-  }
-  li > div {
-    margin-left: 84px;
-  }
-}
-
-#cancel-comment-reply a {
-  display: inline-block;
-  padding: 6px 14px;
-  background-color: #888;
-  color: white;
-  margin-left: 335px;
-  text-shadow: none;
-  -moz-text-shadow: none;
-  font-size: 0.8em;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  -webkit-text-shadow: none;
-}
-
-#comments ol .children #cancel-comment-reply {
-  text-align: right;
-  margin-top: -50px;
-  position: relative;
-
-  a {
-    margin-left: 0;
-    margin-right: 10px;
-    margin-bottom: -5px;
-  }
-}
-
-#cancel-comment-reply a:hover {
-  padding: 6px 14px 8px 14px;
-  margin-top: -2px;
-  position: relative;
-}
-
-#comments {
-  .avatar {
-    float: left;
-    position: relative;
-    margin-left: -84px;
-  }
-
-  .said {
-    font-size: 1.3em;
-    display: inline;
-    margin-bottom: 1em;
-    margin-right: 15px;
-  }
-
-  .time {
-    display: inline;
-    color: #999;
-  }
-
-  .comment-content {
-    margin-top: 1em;
-  }
-
-  .comment-reply-link {
-    text-align: right;
-    margin: 0;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #64b5b6;
-  }
-
-  label {
-    display: inline;
-  }
-}
-
-/* Search Styles */
-
-.search #content {
-  #searchform {
-    margin-top: 1em;
-  }
-  input[type="text"] {
-    width: 500px;
-    display: inline-block;
-  }
-}
-
-/* Gallery Styles */
-
-#discussion {
-  margin-top: 40px;
-  border-top: 2px solid #eee;
-  padding-top: 20px;
 }

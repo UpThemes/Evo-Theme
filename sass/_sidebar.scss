@@ -1,0 +1,44 @@
+.aside {
+  margin: 20px;
+
+  .widget {
+    padding: 20px;
+    border: 3px solid #9F9F9F;
+    background-color: #fff;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+
+    h3 {
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-bottom: 1px solid #eee;
+
+      &:first-child {
+        border-top: 1px solid #eee;
+      }
+
+      a {
+        padding: 3px 0;
+        display: block;
+
+        &:hover {
+          background-color: #f2f2f2;
+          padding-left: 8px;
+        }
+      }
+    }
+  }
+}

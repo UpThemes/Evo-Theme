@@ -1,12 +1,14 @@
 <?php get_header(); ?>
 
-	<div id="container" class="cf">
+  <div id="container" class="cf">
+
+    <h1 class="category-title"><?php _e("Tag Archive:","evo"); ?> <?php single_cat_title(); ?></h1>
 
     <div id="content">
 
 			<?php if( have_posts() ): while ( have_posts() ) : the_post(); ?>
 
-      <?php get_template_part( 'content', 'single' ); ?>
+      <?php get_template_part( 'content', get_post_format() ); ?>
 
       <?php endwhile; else: ?>
 
@@ -16,7 +18,7 @@
 
     </div><!-- /#content -->
 
-    <?php get_sidebar(); ?>
+    <?php evo_navigation_below(); ?>
 
 	</div><!-- /#container -->
 
