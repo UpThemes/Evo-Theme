@@ -2,6 +2,7 @@
 
 	masonry_options = {
 		columWidth : 300,
+		gutterWidth : 20,
 		isFitWidth: true,
 		isAnimatedFromBottom: true,
 		itemSelector: '.hentry'

@@ -9,7 +9,7 @@ Version: 1.4
 
 $primaryColor: #aa1f25;
 $textColor: #222;
-$siteWidth: 1200px;
+$siteWidth: 1260px;
 
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Norican);
 
@@ -17,6 +17,7 @@ $siteWidth: 1200px;
 @import "compass/css3";
 @import "menu";
 @import "header";
+@import "post";
 @import "footer";
 
 body {
@@ -82,15 +83,14 @@ code {
   display: none;
 }
 
-// Curved Edges for stuff
+.clear{
+  clear: both;
+}
+
 .widget,
 .hentry{
   background-color: white;
   border-radius: 4px;
-}
-
-.hentry{
-  @include box-shadow(0 1px 6px rgba(0,0,0,.2),0 0 1px rgba(0,0,0,0.7));
 }
 
 #form-allowed-tags{
@@ -109,92 +109,11 @@ code {
   width: auto;
   height: auto;
   min-height: 100px;
-}
-
-.loading {
-  min-height: 150px;
-  background: white url("images/ajax-loader.gif") no-repeat center 100px;
-}
-
-.archive #content,
-.home #content{
-  max-width: 1280px;
-  margin: 0 auto;
-
-  .hentry {
-    width: 260px;
-    padding: 20px;
-    margin-bottom: 20px;
-    background-color: #fff;
-  }
-}
-
-.clear{
-  clear: both;
-}
-
-
-#wrapper{
   margin-top: 152px-28px;
 }
 
 .logged-in #wrapper{
   margin-top: 152px;
-}
-
-h1.page-title {
-  margin-top: 0.5em;
-}
-
-.avatar {
-  vertical-align: middle;
-}
-
-#masonry {
-  clear: both;
-}
-
-.wp-post-image,
-.entry-title,
-.category{
-  margin-bottom: 1em;
-}
-
-.singular #content {
-  padding: 20px 0;
-
-  .entry-title{
-    font-size: 1em;
-    font-family: "Source Sans Pro";
-    margin-bottom: .5em;
-  }
-
-  .author {
-    margin-bottom: 15px;
-
-    a {
-      font-weight: bold;
-    }
-  }
-
-  .tag a {
-    font-size: .8em;
-    margin-bottom: 10px;
-    border: 1px solid #eee;
-    display: inline-block;
-    padding: 2px 5px;
-    @include border-radius(6px);
-
-    &:hover {
-      background-color: $primaryColor;
-      color: white;
-    }
-  }
-
-  .post-meta {
-    margin-bottom: 1em;
-  }
-
 }
 
 #infscr-loading{
@@ -296,48 +215,6 @@ h1.page-title {
   min-width: auto;
   max-width: auto;
   width: auto;
-}
-
-/* Post Styles */
-
-.hentry {
-  display: inline;
-  float: left;
-  margin-right: 20px;
-}
-
-.single {
-  #container {
-    width: $siteWidth;
-    margin: 20px auto;
-  }
-
-  #content {
-    float: left;
-    width: 70%;
-    margin-right: 2%;
-    background-color: white;
-  }
-
-  .hentry{
-    padding: 0 20px 20px;
-  }
-
-  #secondary {
-    float: left;
-    width: 28%;
-
-    .widget {
-      padding: 20px;
-      background: #fff;
-      margin-bottom: 20px;
-
-      h3 {
-        font-size: 1em;
-        font-weight: bold;
-      }
-    }
-  }
 }
 
 /* Comment Styles */

@@ -231,6 +231,81 @@ li.sfHover > a > .sf-sub-indicator {
 .logged-in #header {
   margin-top: 28px; }
 
+.hentry {
+  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.7); }
+
+.archive #content,
+.home #content {
+  max-width: 1260px;
+  margin: 0 auto; }
+  .archive #content .hentry,
+  .home #content .hentry {
+    width: 260px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff; }
+
+.single #container {
+  width: 1260px;
+  margin: 20px auto; }
+.single #content {
+  float: left;
+  width: 70%;
+  margin-right: 2%;
+  background-color: white; }
+.single .hentry {
+  padding: 0 20px 20px; }
+.single #secondary {
+  float: left;
+  width: 28%; }
+  .single #secondary .widget {
+    padding: 20px;
+    background: #fff;
+    margin-bottom: 20px; }
+    .single #secondary .widget h3 {
+      font-size: 1em;
+      font-weight: bold; }
+
+h1.page-title {
+  margin-top: 0.5em; }
+
+.avatar {
+  vertical-align: middle; }
+
+.wp-post-image,
+.entry-title,
+.category {
+  margin-bottom: 1em; }
+
+.singular #content {
+  padding: 20px 0; }
+  .singular #content .entry-title {
+    font-size: 1em;
+    font-family: "Source Sans Pro";
+    margin-bottom: .5em; }
+  .singular #content .author {
+    margin-bottom: 15px; }
+    .singular #content .author a {
+      font-weight: bold; }
+  .singular #content .tag a {
+    font-size: .8em;
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    display: inline-block;
+    padding: 2px 5px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px; }
+    .singular #content .tag a:hover {
+      background-color: #aa1f25;
+      color: white; }
+  .singular #content .post-meta {
+    margin-bottom: 1em; }
+
 #footer {
   margin-top: 40px;
   background: white;
@@ -238,7 +313,7 @@ li.sfHover > a > .sf-sub-indicator {
   color: #666;
   padding: 40px 0; }
   #footer .inner {
-    max-width: 1200px;
+    max-width: 1260px;
     margin: 0 auto; }
   #footer .widget-area {
     overflow: auto; }
@@ -298,15 +373,13 @@ code {
 .screen-reader-text {
   display: none; }
 
+.clear {
+  clear: both; }
+
 .widget,
 .hentry {
   background-color: white;
   border-radius: 4px; }
-
-.hentry {
-  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.7);
-  -moz-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.7);
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.7); }
 
 #form-allowed-tags {
   font-size: 11px;
@@ -320,72 +393,11 @@ code {
 #wrapper {
   width: auto;
   height: auto;
-  min-height: 100px; }
-
-.loading {
-  min-height: 150px;
-  background: white url("images/ajax-loader.gif") no-repeat center 100px; }
-
-.archive #content,
-.home #content {
-  max-width: 1280px;
-  margin: 0 auto; }
-  .archive #content .hentry,
-  .home #content .hentry {
-    width: 260px;
-    padding: 20px;
-    margin-bottom: 20px;
-    background-color: #fff; }
-
-.clear {
-  clear: both; }
-
-#wrapper {
+  min-height: 100px;
   margin-top: 152px -28px; }
 
 .logged-in #wrapper {
   margin-top: 152px; }
-
-h1.page-title {
-  margin-top: 0.5em; }
-
-.avatar {
-  vertical-align: middle; }
-
-#masonry {
-  clear: both; }
-
-.wp-post-image,
-.entry-title,
-.category {
-  margin-bottom: 1em; }
-
-.singular #content {
-  padding: 20px 0; }
-  .singular #content .entry-title {
-    font-size: 1em;
-    font-family: "Source Sans Pro";
-    margin-bottom: .5em; }
-  .singular #content .author {
-    margin-bottom: 15px; }
-    .singular #content .author a {
-      font-weight: bold; }
-  .singular #content .tag a {
-    font-size: .8em;
-    margin-bottom: 10px;
-    border: 1px solid #eee;
-    display: inline-block;
-    padding: 2px 5px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    -ms-border-radius: 6px;
-    -o-border-radius: 6px;
-    border-radius: 6px; }
-    .singular #content .tag a:hover {
-      background-color: #aa1f25;
-      color: white; }
-  .singular #content .post-meta {
-    margin-bottom: 1em; }
 
 #infscr-loading {
   text-align: center;
@@ -467,33 +479,6 @@ h1.page-title {
   min-width: auto;
   max-width: auto;
   width: auto; }
-
-/* Post Styles */
-.hentry {
-  display: inline;
-  float: left;
-  margin-right: 20px; }
-
-.single #container {
-  width: 1200px;
-  margin: 20px auto; }
-.single #content {
-  float: left;
-  width: 70%;
-  margin-right: 2%;
-  background-color: white; }
-.single .hentry {
-  padding: 0 20px 20px; }
-.single #secondary {
-  float: left;
-  width: 28%; }
-  .single #secondary .widget {
-    padding: 20px;
-    background: #fff;
-    margin-bottom: 20px; }
-    .single #secondary .widget h3 {
-      font-size: 1em;
-      font-weight: bold; }
 
 /* Comment Styles */
 #comments, #respond {
