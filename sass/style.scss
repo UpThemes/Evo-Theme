@@ -18,12 +18,14 @@ $siteWidth: 1260px;
 @import "compass/reset";
 @import "compass/css3";
 @import "base";
+@import "icons";
 @import "header";
 @import "menu";
 @import "post";
 @import "comments";
 @import "sidebar";
 @import "footer";
+@import "flexslider";
 
 .screen-reader-text {
   display: none;
@@ -66,6 +68,23 @@ $siteWidth: 1260px;
   border-bottom: 2px solid rgba(0,0,0,.07);
 }
 
+.home,
+.archive{
+  .no-results{
+    background-color: white;
+    @include border-radius(4px);
+    padding: 60px 20px 40px;
+    max-width: 680px;
+    margin: 0 auto 40px;
+    float: none;
+    text-align: center;
+
+    h1{
+      font-size: 1.5em;
+    }
+  }
+}
+
 #form-allowed-tags{
   font-size: 11px;
   line-height: 16px;
@@ -82,7 +101,6 @@ $siteWidth: 1260px;
   width: auto;
   height: auto;
   min-height: 100px;
-  margin-top: 152px;
 }
 
 #infscr-loading{

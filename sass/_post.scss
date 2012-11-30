@@ -4,7 +4,7 @@
 .page #content,
 #primary .widget{
   @include box-shadow(0 1px 6px rgba(0,0,0,.2),0 0 1px rgba(0,0,0,0.7));
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .single,
@@ -23,12 +23,6 @@
 #masonry{
   max-width: $siteWidth;
   margin: 0 auto;
-
-  .hentry{
-    width: 260px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
 }
 
 .single,
@@ -48,10 +42,21 @@
   }
 
   .hentry{
-    padding: 20px;
+    padding: 30px;
+
+    .entry-header{
+
+      .avatar{
+        float: right;
+        margin-left: 20px;
+        margin-top: -5px;
+      }
+    }
 
     .entry-title{
-      margin-bottom: .5em;
+      padding-top: .17em;
+      font-size: 3em;
+      margin-bottom: .35em;
     }
 
     .post-meta{
@@ -95,6 +100,9 @@
 .home{
   .hentry {
     background-color: #fff;
+    width: 260px;
+    padding: 20px;
+    margin-bottom: 20px;
 
     .wp-caption,img,video{
       max-width: 100%;
@@ -151,5 +159,9 @@
     a{
       color: white;
     }
+  }
+
+  .format-gallery{
+    padding-top: 0;
   }
 }

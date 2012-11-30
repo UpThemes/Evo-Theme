@@ -1,4 +1,17 @@
-<?php get_header(); ?>
+<?php
+/**
+ * The template for displaying Category pages.
+ *
+ * Used to display archive-type pages for posts in a category.
+ *
+ * Learn more: http://codex.wordpress.org/Template_Hierarchy
+ *
+ * @package WordPress
+ * @subpackage Evo
+ * @since Evo 1.0
+ */
+
+get_header(); ?>
 
   <div id="container" class="cf">
 

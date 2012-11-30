@@ -1,4 +1,13 @@
-<?php get_header(); ?>
+<?php
+/**
+ * The Template for displaying all single posts.
+ *
+ * @package WordPress
+ * @subpackage Evo
+ * @since Evo 1.0
+ */
+
+get_header(); ?>
 
 	<div id="container" class="cf">
 

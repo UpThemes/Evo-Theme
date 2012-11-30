@@ -58,7 +58,7 @@ function evo_setup() {
 	add_theme_support( 'automatic-feed-links' );
 
 	// This theme supports a variety of post formats.
-	add_theme_support( 'post-formats', array( 'aside', 'image', 'link', 'quote', 'status' ) );
+	add_theme_support( 'post-formats', array( 'aside', 'image', 'link', 'quote', 'status', 'gallery' ) );
 
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menu( 'primary_nav', __( 'Primary Menu', 'evo' ) );
@@ -89,6 +89,11 @@ add_action( 'after_setup_theme', 'evo_setup' );
 include_once( get_template_directory() . '/library/custom-header.php' );
 
 /**
+ * Adds support for custom gallery sliders
+ */
+include_once( get_template_directory() . '/library/gallery-slider.php' );
+
+/**
  * Enqueues scripts and styles for front-end.
  *
  * @since Evo 1.0
@@ -109,9 +114,12 @@ function evo_scripts_styles() {
   wp_enqueue_script( 'evo-fitvids', get_template_directory_uri() . '/js/jquery.fitvids.js', array('jquery') );
   wp_enqueue_script( 'evo-masonry', get_template_directory_uri() . '/js/jquery.masonry.js', array('evo-infinitescroll') );
   wp_enqueue_script( 'evo-scrollTo', get_template_directory_uri() . '/js/jquery.scrollTo.js', array('evo-masonry') );
+  wp_enqueue_script( 'evo-fitVids', get_template_directory_uri() . '/js/fitVids.js', false );
+  wp_enqueue_script( 'evo-view', get_template_directory_uri() . '/js/view.js', false );
+  wp_enqueue_script( 'evo-flexslider', get_template_directory_uri() . '/js/jquery.flexslider.js', array('jquery') );
   wp_enqueue_script( 'evo-superfish', get_template_directory_uri() . '/js/superfish.js' );
   wp_enqueue_script( 'evo-supersubs', get_template_directory_uri() . '/js/supersubs.js', array('evo-superfish') );
-  wp_enqueue_script( 'evo-global', get_template_directory_uri() . '/js/global.js', array('evo-fitvids','evo-infinitescroll','evo-retina','evo-scrollTo','evo-supersubs','evo-navigation') );
+  wp_enqueue_script( 'evo-global', get_template_directory_uri() . '/js/global.js', array('evo-flexslider','evo-fitvids','evo-infinitescroll','evo-retina','evo-scrollTo','evo-supersubs','evo-navigation') );
 
 	/*
 	 * Loads our main stylesheet.
@@ -135,41 +143,43 @@ function evo_post_thumbnail( $size ){
 
   global $post;
 
-  if( $size == 'grid' ):
-    $normal_size = 'grid';
-    $retina_size = 'grid-2x';
-  elseif( $size == 'full-width' ):
-    $normal_size = 'full-width';
-    $retina_size = 'full-width-2x';
-  else:
-    $normal_size = 'medium';
-    $retina_size = 'large';
-  endif;
+  if( isset($post->ID) && has_post_thumbnail($post->ID) ){
 
-  $post_thumbnail_id = get_post_thumbnail_id($post->ID);
+	  if( $size == 'grid' ):
+	    $normal_size = 'grid';
+	    $retina_size = 'grid-2x';
+	  elseif( $size == 'full-width' ):
+	    $normal_size = 'full-width';
+	    $retina_size = 'full-width-2x';
+	  else:
+	    $normal_size = 'medium';
+	    $retina_size = 'large';
+	  endif;
 
-  $normal_image = wp_get_attachment_image_src( $post_thumbnail_id, $normal_size);
-  $normal_image_src = $normal_image[0];
-  $normal_width = $normal_image[1];
-  $normal_height = $normal_image[2];
-  $retina_image = wp_get_attachment_image_src( $post_thumbnail_id, $retina_size);
-  $retina_image_src = $retina_image[0];
-  $retina_width =  $retina_image[1] ? $retina_image[1] : '200';
-  $retina_height = $retina_image[2] ? $retina_image[2] : '200';
+	  $post_thumbnail_id = get_post_thumbnail_id($post->ID);
 
-  if( $retina_image_src ){
- 		$retina_image = " data-retina=\"$retina_image_src\"";
-  }
+	  $normal_image = wp_get_attachment_image_src( $post_thumbnail_id, $normal_size);
+	  $normal_image_src = $normal_image[0];
+	  $normal_width = $normal_image[1];
+	  $normal_height = $normal_image[2];
+	  $retina_image = wp_get_attachment_image_src( $post_thumbnail_id, $retina_size);
+	  $retina_image_src = $retina_image[0];
+	  $retina_width =  $retina_image[1] ? $retina_image[1] : '200';
+	  $retina_height = $retina_image[2] ? $retina_image[2] : '200';
 
-  if( get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true) )
-    $alt_text = ' alt="' . get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true) . '"';
-  else
-    $alt_text = '';
+	  if( $retina_image_src ){
+	 		$retina_image = " data-retina=\"$retina_image_src\"";
+	  }
 
-  if( $normal_image_src )
+	  if( get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true) )
+	    $alt_text = ' alt="' . get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true) . '"';
+	  else
+	    $alt_text = '';
+
 	  echo "<img class=\"wp-post-image\" width=\"$normal_width\" height=\"$normal_height\" src=\"$normal_image_src\"$retina_image$alt_text>";
-	else
+	} else {
 		echo false;
+	}
 
 }
 
