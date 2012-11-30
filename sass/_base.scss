@@ -52,3 +52,68 @@ h5,h6{
 code {
   font-family: "Courier New", Courier, monospace;
 }
+
+p,ul,ol{
+  margin-bottom: 1em;
+}
+
+/* Form Styles */
+
+input,
+textarea{
+  border: 1px solid #ccc;
+  @include border-radius(4px);
+  outline: none;
+  padding: 8px 8px;
+
+  &:focus{
+    outline: none;
+    border: 1px solid #1aa4ec;
+    @include box-shadow(0 0 5px rgba(#1aa4ec,.5));
+  }
+}
+
+input[type="submit"],
+button,
+.btn{
+  border: 0;
+  padding: 8px 12px;
+  line-height: 1em;
+  color: white;
+  font-size: .9em;
+  font-weight: bold;
+  @include text-shadow(0 -1px 0 rgba(0,0,0,0.4));
+  @include background-image(linear-gradient($primaryColor,darken($primaryColor,8%)));
+  @include border-radius(4px);
+  @include box-shadow(0 1px 0 rgba(255,255,255,0.2) inset,0 2px 4px rgba(0,0,0,0.2));
+  margin-bottom: 20px;
+  border: 1px solid darken($primaryColor,8%);
+
+  &:focus{
+    outline: none;
+    border: 1px solid #1aa4ec;
+    @include box-shadow(0 0 5px rgba(#1aa4ec,.5));
+  }
+}
+
+blockquote{
+  font-size: 1.6em;
+  line-height: 1.2em;
+  font-style: italic;
+  font-family: $secondaryFontFamily;
+  margin-bottom: 1em;
+  padding-left: 20px;
+  border-left: 5px double #eee;
+
+  cite{
+    font-family: $primaryFontFamily;
+    font-size: .62em;
+    font-style: normal;
+
+    &:before{
+      content: "- ";
+    }
+  }
+}
+
+/* End Form Styles */

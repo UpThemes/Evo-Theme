@@ -106,11 +106,12 @@ function evo_scripts_styles() {
   wp_enqueue_script( 'evo-hoverIntent', get_template_directory_uri() . '/js/hoverIntent.js', false );
   wp_enqueue_script( 'evo-retina', get_template_directory_uri() . '/js/jquery.retina.js', false );
   wp_enqueue_script( 'evo-infinitescroll', get_template_directory_uri() . '/js/jquery.infinitescroll.js', array('jquery') );
+  wp_enqueue_script( 'evo-fitvids', get_template_directory_uri() . '/js/jquery.fitvids.js', array('jquery') );
   wp_enqueue_script( 'evo-masonry', get_template_directory_uri() . '/js/jquery.masonry.js', array('evo-infinitescroll') );
   wp_enqueue_script( 'evo-scrollTo', get_template_directory_uri() . '/js/jquery.scrollTo.js', array('evo-masonry') );
   wp_enqueue_script( 'evo-superfish', get_template_directory_uri() . '/js/superfish.js' );
   wp_enqueue_script( 'evo-supersubs', get_template_directory_uri() . '/js/supersubs.js', array('evo-superfish') );
-  wp_enqueue_script( 'evo-global', get_template_directory_uri() . '/js/global.js', array('evo-infinitescroll','evo-retina','evo-scrollTo','evo-supersubs','evo-navigation') );
+  wp_enqueue_script( 'evo-global', get_template_directory_uri() . '/js/global.js', array('evo-fitvids','evo-infinitescroll','evo-retina','evo-scrollTo','evo-supersubs','evo-navigation') );
 
 	/*
 	 * Loads our main stylesheet.
@@ -224,7 +225,7 @@ add_filter( 'wp_page_menu_args', 'evo_page_menu_args' );
 function evo_widgets_init() {
 	register_sidebar( array(
 		'name' => __( 'Main Sidebar', 'evo' ),
-		'id' => 'sidebar-1',
+		'id' => 'sidebar-primary',
 		'description' => __( 'Appears on posts and pages.', 'evo' ),
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
 		'after_widget' => '</aside>',
@@ -235,8 +236,8 @@ function evo_widgets_init() {
 		'name' => __( 'Footer', 'evo' ),
 		'id' => 'sidebar-footer',
 		'description' => __( 'Appears on footer.', 'evo' ),
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget' => '</aside>',
+		'before_widget' => '<aside id="%1$s" class="widget %2$s"><div class="inner">',
+		'after_widget' => '</div></aside>',
 		'before_title' => '<h3 class="widget-title">',
 		'after_title' => '</h3>',
 	) );
@@ -278,53 +279,69 @@ function evo_comment( $comment, $args, $depth ) {
 	switch ( $comment->comment_type ) :
 		case 'pingback' :
 		case 'trackback' :
-		// Display trackbacks differently than normal comments.
 	?>
-	<li <?php comment_class(); ?> id="comment-<?php comment_ID(); ?>">
-		<p><?php _e( 'Pingback:', 'evo' ); ?> <?php comment_author_link(); ?> <?php edit_comment_link( __( '(Edit)', 'evo' ), '<span class="edit-link">', '</span>' ); ?></p>
+	<li class="post pingback">
+		<p><?php _e( 'Pingback:', 'evo' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __( 'Edit', 'evo' ), '<span class="edit-link">', '</span>' ); ?></p>
 	<?php
 			break;
 		default :
-		// Proceed with normal comments.
-		global $post;
 	?>
 	<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
 		<article id="comment-<?php comment_ID(); ?>" class="comment">
-			<header class="comment-meta comment-author vcard">
-				<?php
-					echo get_avatar( $comment, 44 );
-					printf( '<cite class="fn">%1$s %2$s</cite>',
-						get_comment_author_link(),
-						// If current post author is also comment author, make it known visually.
-						( $comment->user_id === $post->post_author ) ? '<span> ' . __( 'Post author', 'evo' ) . '</span>' : ''
-					);
-					printf( '<a href="%1$s"><time datetime="%2$s">%3$s</time></a>',
-						esc_url( get_comment_link( $comment->comment_ID ) ),
-						get_comment_time( 'c' ),
-						/* translators: 1: date, 2: time */
-						sprintf( __( '%1$s at %2$s', 'evo' ), get_comment_date(), get_comment_time() )
-					);
-				?>
-			</header><!-- .comment-meta -->
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+					<?php
+						$avatar_size = 68;
+						if ( '0' != $comment->comment_parent )
+							$avatar_size = 39;
 
-			<?php if ( '0' == $comment->comment_approved ) : ?>
-				<p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'evo' ); ?></p>
-			<?php endif; ?>
+						echo get_avatar( $comment, $avatar_size );
 
-			<section class="comment-content comment">
-				<?php comment_text(); ?>
-				<?php edit_comment_link( __( 'Edit', 'evo' ), '<p class="edit-link">', '</p>' ); ?>
-			</section><!-- .comment-content -->
+						/* translators: 1: comment author, 2: date and time */
+						printf( __( '%1$s <span class="says">said:</span>', 'evo' ),
+							sprintf( '<span class="fn">%s</span>', get_comment_author_link() )
+						);
+					?>
+
+				</div><!-- .comment-author .vcard -->
+
+				<?php if ( $comment->comment_approved == '0' ) : ?>
+					<em class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'evo' ); ?></em>
+					<br />
+				<?php endif; ?>
+
+			</footer>
+
+			<div class="comment-content"><?php comment_text(); ?></div>
 
 			<div class="reply">
 				<?php comment_reply_link( array_merge( $args, array( 'reply_text' => __( 'Reply <span>&darr;</span>', 'evo' ), 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
 			</div><!-- .reply -->
 		</article><!-- #comment-## -->
+
 	<?php
-		break;
-	endswitch; // end comment_type check
+			break;
+	endswitch;
 }
-endif;
+endif; // ends check for evo_comment()
+
+/**
+ * Modifies the text fields for the comment form.
+ *
+ * @since Evo 1.4
+ */
+function upthemes_form_fields($fields) {
+	global $commenter,$aria_req;
+  $fields = array(
+  	'author' => '<p class="comment-form-author"><span class="text-field-holder"><input id="author" name="author" placeholder="Name" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '"' . $aria_req . ' /></span></p>',
+  	'email'  => '<p class="comment-form-email"><span class="text-field-holder"><input id="email" name="email" placeholder="Email" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) . '"' . $aria_req . ' /></span></p>',
+  	'url'    => '<p class="comment-form-url"><span class="text-field-holder"><input id="url" name="url" placeholder="Web URL" type="text" value="' . esc_attr( $commenter['comment_author_url'] ) . '" /></span></p>'
+  );
+
+  return $fields;
+}
+
+add_filter('comment_form_default_fields','upthemes_form_fields');
 
 if ( ! function_exists( 'evo_entry_meta' ) ) :
 /**

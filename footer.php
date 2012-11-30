@@ -4,14 +4,15 @@
 
     <div class="inner">
 
-      <?php get_sidebar('sidebar-footer'); ?>
+      <?php get_sidebar('footer'); ?>
     
       <div id="siteinfo">
     
         <?php
         wp_nav_menu(array(
           'theme_location' => 'footer_nav',
-          'container' => false
+          'container' => false,
+          'depth' => 0
         ));
         ?>
     

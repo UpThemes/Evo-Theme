@@ -1,6 +1,17 @@
-.hentry,
-#secondary .widget{
+.archive .hentry,
+.home .hentry,
+.single #content,
+.page #content,
+#primary .widget{
   @include box-shadow(0 1px 6px rgba(0,0,0,.2),0 0 1px rgba(0,0,0,0.7));
+  border-radius: 4px;
+}
+
+.single,
+.page{
+  .hentry{
+    padding: 20px;
+  }
 }
 
 .archive #content,
@@ -13,15 +24,15 @@
   max-width: $siteWidth;
   margin: 0 auto;
 
-  .hentry {
+  .hentry{
     width: 260px;
     padding: 20px;
     margin-bottom: 20px;
-    background-color: #fff;
   }
 }
 
-.single {
+.single,
+.page {
   #container {
     max-width: $siteWidth*.794;
     height: auto;
@@ -38,31 +49,36 @@
 
   .hentry{
     padding: 20px;
-  }
 
-  #secondary {
-    float: left;
-    width: 28%;
+    .entry-title{
+      margin-bottom: .5em;
+    }
 
-    .widget {
-      padding: 20px;
-      background: #fff;
-      margin-bottom: 20px;
+    .post-meta{
+      margin-bottom: 1em;
+      color: #999;
 
-      h3 {
-        font-size: 1em;
-        font-weight: bold;
+      a{
+        color: #999;
       }
     }
   }
+
 }
 
-h1.page-title {
+.page-title{
   margin-top: 0.5em;
 }
 
 .avatar {
   vertical-align: middle;
+  @include border-radius(50%);
+}
+
+.single{
+  .entry-title{
+    margin-bottom: 0;
+  }
 }
 
 .wp-post-image,
@@ -73,37 +89,67 @@ h1.page-title {
 
 .singular #content {
   padding: 20px 0;
+}
+
+.archive,
+.home{
+  .hentry {
+    background-color: #fff;
+
+    .wp-caption,img,video{
+      max-width: 100%;
+      height: auto;
+    }
+  }
 
   .entry-title{
     font-size: 1em;
-    font-family: "Source Sans Pro";
-    margin-bottom: .5em;
   }
 
-  .author {
-    margin-bottom: 15px;
+  .post-meta{
+    font-size: .9em;
+    margin: 0 -20px -20px -20px;
+    border-top: 1px solid #eee;
+    padding: 10px 20px 10px 20px;
 
-    a {
-      font-weight: bold;
+    .category {
+      float: left;
+      margin-bottom: 0;
+
+      a{
+        color: #999;
+
+        &:hover{
+          color: $primaryColor;
+        }
+      }
+    }
+
+    .comments{
+      color: #999;
+      text-align: right;
     }
   }
 
-  .tag a {
-    font-size: .8em;
-    margin-bottom: 10px;
-    border: 1px solid #eee;
-    display: inline-block;
-    padding: 2px 5px;
-    @include border-radius(6px);
+  .format-quote{
+    background-color: $primaryColor;
+    color: white;
 
-    &:hover {
-      background-color: $primaryColor;
+    .comments,
+    .category{
+      border-color: darken($primaryColor,10%);
+    }
+
+    .tags{
+      margin-bottom: 20px;
+    }
+
+    blockquote{
+
+    }
+
+    a{
       color: white;
     }
   }
-
-  .post-meta {
-    margin-bottom: 1em;
-  }
-
 }

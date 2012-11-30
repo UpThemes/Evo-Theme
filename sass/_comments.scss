@@ -1,232 +1,195 @@
 #discussion {
-  margin-top: 40px;
+  margin-top: 30px;
   border-top: 2px solid #eee;
-  padding-top: 20px;
+  padding-top: 30px;
 }
 
-.comments-title {
-  font-family:Enriqueta;
-  text-transform:uppercase;
-}
+#comments{
 
-.logged-in-as,
-.form-allowed-tags{
-  font-size: .8em;
-  line-height: 1.6em;
-  padding: 6px 0;
-}
+  h2#comments-title,
+  h3#reply-title{
+    border-bottom: none;
+    margin-bottom: 1em;
+    text-transform: uppercase;
+  }
 
-.form-allowed-tags {
-  font-weight: bold;
-  font-size: 0.84em;
-  color: lighten(black,40%);
-  margin-bottom: 1em;
-}
+  .commentlist{
+    padding-bottom: 0;
+    margin-bottom: 2em;
 
-.commentlist {
-  margin-bottom: 20px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  clear: both;
+    #respond{
+      margin-left: 100px;
 
-  li {
+      h3#reply-title{
+        text-align: left;
+      }
+    }
+  }
+
+  ol,li{
     margin: 0;
     padding: 0;
     list-style: none;
-    clear: both;
-  } 
-}
-
-#comments, 
-.commentlist, 
-#respond {
-  margin-bottom: 20px; 
-}
-
-textarea {
-  resize:none;
-  width:100%!important;
-}
-
-.commentlist {
-
-  #respond {
-    margin-left: 0;
-    padding: 20px;
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    
-    textarea {
-      width: 100%;
-    } 
   }
 
-  li {
-    padding: 20px 0;
-    margin-bottom: 10px;
-    -moz-border-radius: 4px;
-    position: relative;
-  } 
-}
-
-.comment-meta {
-  float:left;
-  width:20%;
-}
-
-.comment-author {
-  padding-top: 10px;
-  top: 0;
-  padding-right:20px;
-}
-
-.comment-author .avatar-wrap {
-  border-radius:100px;
-  padding: 5px;
-  border: 2px solid $primaryColor;
-  float:left;
-}
-
-.author-name {
-  font-weight:bold;
-  margin-bottom:10px;
-  font-size:14px;
-
-  a {
-    color:inherit;
+  p.logged-in-as{
+    text-transform: uppercase;
+    font-size: .9em;
+    border: 1px solid #f2f2f2;
+    padding: 10px 0;
+    border-left-width: 0;
+    border-right-width: 0;
   }
-}
 
-.edit-link {
-  text-align:center;
-  margin-right:10px;
-  padding:10px 0 0 0;
-}
+  & > ol > li.comment{
 
-.comment-content {
-  float:right;
-  width:80%;
-}
-
-.comment-author img {
-  display: block;
-  border-radius:100px;
-}
-
-.comment {
-  overflow:hidden;
-}
-
-.reply {
-  font-size:14px;
-
-  a {
-    text-transform:uppercase;
-  }
-}
-
-.comment-date {
-  font-size:14px;
-  opacity:.7;
-  margin-bottom:10px;
-  display:block;
-}
-
-.commentlist {
-
-  .children {
-    margin: 10px 0 0 0;
-    padding: 0;
-
-    .even {
-      background: #EFF7FF;
+    & > article{
     }
 
-    .comment-author {
+    article{
       position: relative;
-      left: auto;
-      width: auto;
+      padding: 1em 70px 1em 100px;
+    }
+
+    .avatar{
+      position: absolute;
+      top: 1em;
+      left: 0;
+      @include border-radius(50%);
+    }
+
+    p{
+      font-style: normal;
+
+      &:last-child{
+        margin-bottom: 0;
+      }
+    }
+
+    ul.children{
       margin: 0;
       padding: 0;
-      padding-bottom: 10px;
-      top: auto;
-      background: none;
+      list-style: none;
 
-      img {
-        display: inline;
-        vertical-align: middle;
-        margin-right: 5px;
-        padding: 2px;
-        border: 1px solid #ccc; 
-      } 
-    } 
-  }
+      li.comment{
+        margin: 0;
+        padding: 0;
+        list-style: none;
 
-  li a {
+        & > article{
+          padding-left: 70px;
 
-  } 
-}
-
-#commentform {
-  
-  input[type="text"],
-  textarea{
-    display: block;
-    width: auto;
-    margin-top: 10px;
-    padding:10px;
-    font-size: 14px;
-    color: #999;
-    border:2px solid $primaryColor;
-    box-sizing:border-box;
-    -moz-box-sizing:border-box;
-  }
-
-}
-
-#respond {
-
-  .comment-form-author,
-  .comment-form-email {
-    float:left;
-    width:48%;
-  }
-
-  .comment-form-author {
-    margin-right:4%;
-  }
-
-  input[type="text"] {
-    width:100%; 
-  }
-
-  label {
-    font-family:"Open Sans";
-    color:#999;
-    font-size:14px;
-    text-transform:uppercase;
-    letter-spacing:1px;
-  }
-
-  #reply-title {
-    font-family:"Enriqueta";
-    text-transform:uppercase;
-  }
-
-  .form-submit {
-
-    input {
-      padding:15px;
-      font-family:"Enriqueta";
-      text-transform:uppercase;
-      color:#fff;
-      border:0;
-      border-radius:0;
-      letter-spacing:1px;
-      float:right;
-      @include box-shadow(-5px 5px rgba(#736054,.1));
+          .avatar{
+            left: 100px;
+          }
+        }
+      }
     }
+
+    & > ul.children{
+      margin-bottom: 1em;
+      padding-top: 0;
+      padding-left: 0;
+
+      li.comment{
+        background: transparent url('images/ico_reply.gif') no-repeat 43px 1em;
+      }
+
+      & > li.comment article{
+        padding-left: 160px;
+      }
+    }
+
+  }
+}
+
+#respond{
+
+  p.comment-form-email,
+  p.comment-form-url,
+  p.comment-form-author{
+    width: 31%;
+    margin-right: 3.46%;
+    float: left;
+    min-height: 50px;
+    margin-bottom: 10px;
+
+    .text-field-holder{
+      height: 50px;
+      display: block;
+      position: relative;
+    }
+
+    input,
+    textarea{
+      position: absolute;
+      width: auto;
+      left: 0;
+      right: 0;
+      top: 0;
+      width: 87%;
+      padding: 12px;
+    }
+  }
+
+  p.comment-form-url{
+    margin-right: 0;
+  }
+
+  p.comment-form-comment{
+    clear: both;
+    margin-bottom: 7px;
+
+    label{
+      display: none;
+    }
+
+    span{
+      display: block;
+      height: 10em;
+      position: relative;
+    }
+
+    textarea{
+      position: absolute;
+      display: block;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 95.7%;
+      height: 8em;
+      padding: 12px;
+    }
+  }
+
+  p{
+    position: relative;
+    display: block;
+
+    label{
+      display: block;
+    }
+  }
+
+  p.form-allowed-tags{
+    width: auto;
+    color: #aaa;
+    font-size: .9em;
+    line-height: .8em;
+    float: left;
+    width: 65%;
+
+    code{
+      color: #aaa;
+      font-size: .84em;
+      background: transparent;
+    }
+  }
+
+  p.form-submit{
+    float: right;
+    width: 35%;
+    text-align: right;
   }
 }

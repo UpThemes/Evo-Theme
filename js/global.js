@@ -10,6 +10,8 @@
 
 	$(document).ready(function(e){
 
+    $("#content").fitVids();
+
     $('img[data-retina]').retina({ checkIfImageExists: true });
 
     $container = $("#masonry");
@@ -31,6 +33,7 @@
     function( newElements ) {
       // hide new items while they are loading
       var $newElems = $( newElements ).css({ opacity: 0 });
+      $newElems.fitVids();
       // ensure that images load before adding to masonry layout
       $newElems.imagesLoaded(function(){
         // show elems now they're ready

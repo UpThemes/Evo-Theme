@@ -4,7 +4,7 @@
 
     <div id="content">
 
-      <h1 class="category-title"><?php _e("Category Archive:","evo"); ?> <?php single_cat_title(); ?></h1>
+      <h1 class="category-title"><?php _e("Category Archives:","evo"); ?> <?php single_cat_title(); ?></h1>
 
       <div id="masonry">
 
