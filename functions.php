@@ -66,8 +66,8 @@ function evo_setup() {
 
   add_image_size('full-width',660,99999,false);
   add_image_size('full-width-2x',1320,99999,false);
-  add_image_size('grid',260,260,false);
-  add_image_size('grid-2x',520,520,false);
+  add_image_size('grid',300,300,false);
+  add_image_size('grid-2x',600,600,false);
 
 	/*
 	 * This theme supports custom background color and image, and here

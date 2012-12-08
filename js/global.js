@@ -4,11 +4,14 @@
 		columWidth : 300,
 		gutterWidth : 20,
 		isFitWidth: true,
+    isAnimated: true,
 		isAnimatedFromBottom: true,
 		itemSelector: '.hentry'
 	};
 
 	$(document).ready(function(e){
+
+    $container = $("#masonry");
 
     new View( $("a[href$='.jpg'],a[href$='.png'],a[href$='.jpeg'],a[href$='.gif']") );
 
@@ -20,15 +23,18 @@
 
     $(".flexslider").flexslider({
       controlNav: false,
+      smoothHeight: true,
+      animationSpeed: 200,
       prevText: "<i class='icon-left-open'></i>",
-      nextText: "<i class='icon-right-open'></i>"
+      nextText: "<i class='icon-right-open'></i>",
+      after : function(){
+        $("#masonry").masonry( 'reload' );
+      }
     });
 
     $("#content").fitVids();
 
     $('img[data-retina]').retina({ checkIfImageExists: true });
-
-    $container = $("#masonry");
 
     $container.imagesLoaded(function(){
       if( !$('.no-results').length )

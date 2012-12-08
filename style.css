@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Norican);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Norican|Playfair+Display+SC);
 /*
 Theme Name: Evo
 Theme URI: http://upthemes.com/themes/evo/
@@ -151,19 +151,21 @@ button,
     box-shadow: 0 0 5px rgba(26, 164, 236, 0.5); }
 
 blockquote {
-  font-size: 1.6em;
+  font-size: 1.8em;
   line-height: 1.2em;
-  font-style: italic;
-  font-family: "Norican";
+  font-family: "Playfair Display SC";
   margin-bottom: 1em;
-  padding-left: 20px;
-  border-left: 5px double #eee; }
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #d9d9d9;
+  color: #666; }
   blockquote cite {
-    font-family: "Source Sans Pro";
-    font-size: .62em;
-    font-style: normal; }
+    font-family: "Playfair Display SC";
+    font-size: .62em; }
     blockquote cite:before {
       content: "- "; }
+  blockquote p:last-child {
+    margin-bottom: 0; }
 
 /* End Form Styles */
 @font-face {
@@ -406,7 +408,7 @@ li.sfHover > a > .sf-sub-indicator {
 
 #masonry {
   max-width: 1260px;
-  margin: 0 auto; }
+  margin: 0 auto 40px; }
 
 .single #container,
 .page #container {
@@ -475,6 +477,10 @@ li.sfHover > a > .sf-sub-indicator {
   .home .hentry video {
     max-width: 100%;
     height: auto; }
+.archive #content .wp-post-image,
+.home #content .wp-post-image {
+  margin: -20px -20px 10px;
+  max-width: 300px; }
 .archive .entry-title,
 .home .entry-title {
   font-size: 1em; }
@@ -484,6 +490,11 @@ li.sfHover > a > .sf-sub-indicator {
   margin: 0 -20px -20px -20px;
   border-top: 1px solid #eee;
   padding: 10px 20px 10px 20px; }
+  .archive .post-meta .category a,
+  .archive .post-meta .comments a,
+  .home .post-meta .category a,
+  .home .post-meta .comments a {
+    color: #999; }
   .archive .post-meta .category,
   .home .post-meta .category {
     float: left;
@@ -500,22 +511,32 @@ li.sfHover > a > .sf-sub-indicator {
     text-align: right; }
 .archive .format-quote,
 .home .format-quote {
-  background-color: #aa1f25;
-  color: white; }
+  background-color: #eee;
+  color: #999; }
   .archive .format-quote .comments,
   .archive .format-quote .category,
   .home .format-quote .comments,
   .home .format-quote .category {
-    border-color: #7f171c; }
+    border-color: #999; }
   .archive .format-quote .tags,
   .home .format-quote .tags {
     margin-bottom: 20px; }
+  .archive .format-quote blockquote,
+  .home .format-quote blockquote {
+    margin-bottom: 0; }
   .archive .format-quote a,
   .home .format-quote a {
     color: white; }
 .archive .format-gallery,
 .home .format-gallery {
   padding-top: 0; }
+.archive .format-image .wp-post-image,
+.home .format-image .wp-post-image {
+  -webkit-border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  -ms-border-radius: 4px 4px 0 0;
+  -o-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0; }
 
 #comments h2#comments-title,
 #comments h3#reply-title {
@@ -975,6 +996,22 @@ html[xmlns] .slides {
   .flex-direction-nav .flex-next {
     opacity: 1;
     right: 0; } }
+.viewer li {
+  -webkit-transition: width 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  -moz-transition: width 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: width 500ms cubic-bezier(0.075, 0.82, 0.165, 1); }
+
+.viewer .caption {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity 1.5s ease-in-out;
+  -moz-transition: opacity 1.5s ease-in-out;
+  transition: opacity 1.5s ease-in-out; }
+
+.viewer .current .caption {
+  opacity: 100;
+  visibility: visible; }
+
 .screen-reader-text {
   display: none; }
 
@@ -1057,13 +1094,32 @@ html[xmlns] .slides {
   -o-border-radius: 4px;
   border-radius: 4px; }
 
+.wp-caption {
+  padding: 0;
+  margin-bottom: 1em; }
+
+.alignleft {
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px; }
+
+.alignright {
+  float: right;
+  margin-left: 20px;
+  margin-bottom: 20px; }
+
+.aligncenter {
+  margin: 0 auto; }
+
 #more a {
   color: white;
   background-color: #aa1f25;
   display: block;
+  border: 2px solid white;
   text-align: center;
   padding: 15px 10px;
-  margin: 0 20px;
+  margin: 0 auto;
+  max-width: 320px;
   font-weight: bold;
   font-size: 1.4em;
   text-transform: uppercase;

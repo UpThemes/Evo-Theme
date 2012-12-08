@@ -22,7 +22,7 @@
 
 #masonry{
   max-width: $siteWidth;
-  margin: 0 auto;
+  margin: 0 auto 40px;
 }
 
 .single,
@@ -110,6 +110,11 @@
     }
   }
 
+  #content .wp-post-image{
+    margin: -20px -20px 10px;
+    max-width: 300px;
+  }
+
   .entry-title{
     font-size: 1em;
   }
@@ -120,7 +125,14 @@
     border-top: 1px solid #eee;
     padding: 10px 20px 10px 20px;
 
-    .category {
+    .category,
+    .comments{
+      a{
+        color: #999;
+      }
+    }
+
+    .category{
       float: left;
       margin-bottom: 0;
 
@@ -140,12 +152,12 @@
   }
 
   .format-quote{
-    background-color: $primaryColor;
-    color: white;
-
+    background-color: #eee;
+    color: #999;
+ 
     .comments,
     .category{
-      border-color: darken($primaryColor,10%);
+      border-color: #999;
     }
 
     .tags{
@@ -153,7 +165,7 @@
     }
 
     blockquote{
-
+      margin-bottom: 0;
     }
 
     a{
@@ -163,5 +175,11 @@
 
   .format-gallery{
     padding-top: 0;
+  }
+
+  .format-image{
+    .wp-post-image{
+      @include border-radius(4px 4px 0 0);
+    }
   }
 }

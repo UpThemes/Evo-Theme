@@ -97,22 +97,26 @@ button,
 }
 
 blockquote{
-  font-size: 1.6em;
+  font-size: 1.8em;
   line-height: 1.2em;
-  font-style: italic;
-  font-family: $secondaryFontFamily;
+  font-family: $tertiaryFontFamily;
   margin-bottom: 1em;
-  padding-left: 20px;
-  border-left: 5px double #eee;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #d9d9d9;
+  color: #666;
 
   cite{
-    font-family: $primaryFontFamily;
+    font-family: $tertiaryFontFamily;
     font-size: .62em;
-    font-style: normal;
 
     &:before{
       content: "- ";
     }
+  }
+
+  p:last-child{
+    margin-bottom: 0;
   }
 }
 

@@ -7,10 +7,11 @@ Author URI: http://upthemes.com
 Version: 1.4
 */
 
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Norican);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Norican|Playfair+Display+SC);
 
 $primaryFontFamily: "Source Sans Pro";
 $secondaryFontFamily: "Norican";
+$tertiaryFontFamily: "Playfair Display SC";
 $primaryColor: #aa1f25;
 $textColor: #222;
 $siteWidth: 1260px;
@@ -26,6 +27,7 @@ $siteWidth: 1260px;
 @import "sidebar";
 @import "footer";
 @import "flexslider";
+@import "viewjs";
 
 .screen-reader-text {
   display: none;
@@ -115,13 +117,36 @@ $siteWidth: 1260px;
   @include border-radius(4px);
 }
 
+.wp-caption{
+  padding: 0;
+  margin-bottom: 1em;
+}
+
+.alignleft{
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.alignright{
+  float: right;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.aligncenter{
+  margin: 0 auto;
+}
+
 #more a {
   color: white;
   background-color: $primaryColor;
   display: block;
+  border: 2px solid white;
   text-align: center;
   padding: 15px 10px;
-  margin: 0 20px;
+  margin: 0 auto;
+  max-width: 320px;
   font-weight: bold;
   font-size: 1.4em;
   text-transform: uppercase;
