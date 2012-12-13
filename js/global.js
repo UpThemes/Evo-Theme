@@ -1,7 +1,7 @@
 (function($){
 
 	masonry_options = {
-		columWidth : 300,
+		columWidth : 232,
 		gutterWidth : 20,
 		isFitWidth: true,
     isAnimated: true,

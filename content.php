@@ -13,7 +13,7 @@
 
     <h3 class="entry-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 
-    <?php the_content(); ?>
+    <?php the_excerpt(); ?>
 
     <div class="post-meta">
       <div class="category"><?php the_category(', '); ?></div>

@@ -403,16 +403,16 @@ li.sfHover > a > .sf-sub-indicator {
 
 .archive #content,
 .home #content {
-  max-width: 1260px;
+  max-width: 1240px;
   margin: 0 auto; }
 
 #masonry {
-  max-width: 1260px;
+  max-width: 1240px;
   margin: 0 auto 40px; }
 
 .single #container,
 .page #container {
-  max-width: 1000.44px;
+  max-width: 984.56px;
   height: auto;
   margin: 20px auto;
   padding: 20px; }
@@ -468,7 +468,7 @@ li.sfHover > a > .sf-sub-indicator {
 .archive .hentry,
 .home .hentry {
   background-color: #fff;
-  width: 260px;
+  width: 192px;
   padding: 20px;
   margin-bottom: 20px; }
   .archive .hentry .wp-caption, .archive .hentry img, .archive .hentry video,
@@ -751,7 +751,7 @@ li.sfHover > a > .sf-sub-indicator {
   #footer a {
     color: #aa1f25; }
   #footer .inner {
-    max-width: 1260px;
+    max-width: 1240px;
     margin: 0 auto; }
   #footer .widget-area {
     overflow: auto; }
